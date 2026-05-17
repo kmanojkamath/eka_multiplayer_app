@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "766717220987",
+    "project_id": "eka-multiplayer-app",
+    "storage_bucket": "eka-multiplayer-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766717220987:android:c1494acf92204e1490eade",
+        "android_client_info": {
+          "package_name": "com.example.eka_multiplayer_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvVR5pMApu1f4-KLMQn6Wl7W8Sk9pqPLo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,36 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "eka-multiplayer-app",
+          "appId": "1:766717220987:android:c1494acf92204e1490eade",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "eka-multiplayer-app",
+          "configurations": {
+            "android": "1:766717220987:android:c1494acf92204e1490eade",
+            "ios": "1:766717220987:ios:127ee4c43659346190eade",
+            "macos": "1:766717220987:ios:127ee4c43659346190eade",
+            "web": "1:766717220987:web:2a7a5da6d78e92b190eade"
+          }
+        }
+      }
+    }
+  },
+  "emulators": {
+    "singleProjectMode": true,
+    "auth": {
+      "port": 9099
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "ui": {
+      "enabled": true
+    }
+  }
+}
