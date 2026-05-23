@@ -1,6 +1,11 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import 'create_room_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -50,8 +55,8 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       setState(() => isLoading = true);
 
-      final GoogleSignInAccount googleUser =
-          await GoogleSignIn.instance.authenticate();
+      final GoogleSignInAccount googleUser = await GoogleSignIn.instance
+          .authenticate();
 
       final googleAuth = googleUser.authentication;
 
@@ -61,13 +66,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
       final user = FirebaseAuth.instance.currentUser;
 
-      if (user != null && user.isAnonymous) {
-        await user.linkWithCredential(credential);
+      await user!.linkWithCredential(credential);
 
-        debugPrint("Guest upgraded to Google account");
-      } else {
-        await FirebaseAuth.instance.signInWithCredential(credential);
-      }
+      debugPrint("Guest upgraded to Google account");
+
+      FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+        'name': googleUser.displayName,
+      }, SetOptions(merge: true));
     } on FirebaseAuthException catch (e) {
       debugPrint(e.code);
       debugPrint(e.message);
@@ -104,10 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(width: 10),
             Text(
               text,
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -128,6 +130,16 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () async {
+              final user = FirebaseAuth.instance.currentUser;
+
+              if (user != null && user.isAnonymous) {
+                await user.delete(); // deletes guest account
+                await FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(user.uid)
+                    .delete();
+              }
+
               await FirebaseAuth.instance.signOut();
             },
             icon: const Icon(Icons.logout),
@@ -174,10 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 duration: const Duration(milliseconds: 540),
                 child: const Text(
                   "eka",
-                  style: TextStyle(
-                    fontSize: 69,
-                    fontWeight: FontWeight.w900,
-                  ),
+                  style: TextStyle(fontSize: 69, fontWeight: FontWeight.w900),
                 ),
               ),
 
@@ -185,11 +194,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 opacity: showSubtitle ? 1 : 0,
                 duration: const Duration(milliseconds: 540),
                 child: const Text(
-                  "Player vs Bot",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  "Multiplayer",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
 
@@ -201,10 +207,53 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: [
                     buildButton(
-                      text: "Play",
-                      icon: Icons.play_arrow_rounded,
+                      text: "Create Room",
+                      icon: Icons.add_circle_outline,
+                      onPressed: () async {
+                        String random6CharString() {
+                          const chars =
+                              'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#\$%^&*';
+
+                          final random = Random();
+
+                          return List.generate(
+                            6,
+                            (index) => chars[random.nextInt(chars.length)],
+                          ).join();
+                        }
+
+                        Future<String> generateUniqueRoomId() async {
+                          String roomId;
+
+                          do {
+                            roomId = random6CharString();
+                          } while ((await FirebaseFirestore.instance
+                                  .collection('rooms')
+                                  .doc(roomId)
+                                  .get())
+                              .exists);
+
+                          return roomId;
+                        }
+
+                        final roomId = await generateUniqueRoomId();
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => CreateRoomScreen(roomId),
+                          ),
+                        );
+                      },
+                    ),
+
+                    const SizedBox(height: 14),
+
+                    buildButton(
+                      text: "Join Room",
+                      icon: Icons.door_front_door,
                       onPressed: () {
-                        debugPrint("Play pressed");
+                        debugPrint("Join Room");
                       },
                     ),
 

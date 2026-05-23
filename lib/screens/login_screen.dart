@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eka_multiplayer_app/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -50,8 +51,11 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => isLoading = true);
 
     try {
-      await signInWithGoogle();
+      UserCredential user = await signInWithGoogle();
       debugPrint(FirebaseAuth.instance.currentUser.toString());
+      FirebaseFirestore.instance.collection('users').doc(user.user!.uid).set({
+        'name': user.user!.displayName,
+      }, SetOptions(merge: true));
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -65,8 +69,11 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => isLoading = true);
 
     try {
-      await FirebaseAuth.instance.signInAnonymously();
+      UserCredential user = await FirebaseAuth.instance.signInAnonymously();
       debugPrint("Signed in anonymously.");
+      FirebaseFirestore.instance.collection('users').doc(user.user!.uid).set({
+        'name': user.user!.displayName,
+      });
     } on FirebaseAuthException catch (e) {
       debugPrint("Code: ${e.code}");
       debugPrint("Message: ${e.message}");
@@ -159,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 opacity: showSubtitle ? 1 : 0,
                 duration: const Duration(milliseconds: 540),
                 child: const Text(
-                  "Player vs Bot",
+                  "Multiplayer",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),

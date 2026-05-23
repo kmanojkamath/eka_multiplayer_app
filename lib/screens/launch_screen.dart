@@ -26,10 +26,10 @@ class _LaunchScreenState extends State<LaunchScreen> {
       setState(() => offset2 = const Offset(-0.5, 0));
       await Future.delayed(const Duration(milliseconds: 420));
 
-      setState(() => offset3 = const Offset(0.4, 0));
+      setState(() => offset3 = const Offset(0.35, 0));
       await Future.delayed(const Duration(milliseconds: 420));
 
-      setState(() => offset4 = const Offset(1.7, 0));
+      setState(() => offset4 = const Offset(1.75, 0));
       await Future.delayed(const Duration(milliseconds: 810));
 
       setState(() => opacity = 1);
