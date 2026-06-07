@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../card/card_animations/positions.dart';
+import '../../logics/positions.dart';
 
 class RoomIdPlate extends StatelessWidget {
   final Positions positions;

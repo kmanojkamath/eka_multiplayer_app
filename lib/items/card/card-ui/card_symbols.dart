@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../card_logic.dart';
+import '../../../logics/card_logic.dart';
 
 import 'symbols/skip_symbol.dart';
 import 'symbols/reverse_symbol.dart';

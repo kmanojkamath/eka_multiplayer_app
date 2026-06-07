@@ -1,8 +1,10 @@
-import 'package:eka_multiplayer_app/items/card/card-ui/card_widget.dart';
-import 'package:eka_multiplayer_app/items/card/card_logic.dart';
-import 'package:eka_multiplayer_app/items/card/card_storage.dart';
-import 'package:eka_multiplayer_app/items/card/card_animations/positions.dart';
 import 'package:flutter/material.dart';
+
+import '../../items/card/card-ui/card_widget.dart';
+
+import '../../logics/positions.dart';
+import '../../logics/card_logic.dart';
+import '../../logics/card_storage.dart';
 
 class TopCard extends StatefulWidget {
   final CardStorage cardStorage;

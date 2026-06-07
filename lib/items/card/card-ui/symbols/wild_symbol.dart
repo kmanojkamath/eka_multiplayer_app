@@ -1,10 +1,8 @@
-import '../card_widget.dart';
-
 import 'package:flutter/material.dart';
 
 import 'dart:math';
 
-import '/items/card/card_logic.dart';
+import '../../../../logics/colors.dart';
 
 class WildSymbol extends CustomPainter {
   @override

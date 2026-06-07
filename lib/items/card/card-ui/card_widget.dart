@@ -1,26 +1,12 @@
 import 'dart:math';
 
-import '../animated-cards/animated_card.dart';
-import '../card_logic.dart';
-
-import 'card_symbols.dart';
-
 import 'package:flutter/material.dart';
 
-Color color(CardColor cardcolor) {
-  switch (cardcolor) {
-    case CardColor.red:
-      return Colors.red;
-    case CardColor.green:
-      return Colors.green;
-    case CardColor.blue:
-      return Colors.blue;
-    case CardColor.yellow:
-      return Colors.amberAccent;
-    case CardColor.wild:
-      return Colors.black;
-  }
-}
+import '../../../logics/colors.dart';
+import '../animated-cards/animated_card.dart';
+import '../../../logics/card_logic.dart';
+
+import 'card_symbols.dart';
 
 class EkaCardWidget extends StatelessWidget {
   final EkaCard _card;

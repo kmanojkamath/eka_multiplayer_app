@@ -2,8 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../logics/name_generator.dart';
-import '../card/card_animations/positions.dart';
-import '../card/card_storage.dart';
+import '../../logics/positions.dart';
+import '../../logics/card_storage.dart';
+
 import 'name_plate.dart';
 
 class RoomNamePlate extends StatefulWidget {

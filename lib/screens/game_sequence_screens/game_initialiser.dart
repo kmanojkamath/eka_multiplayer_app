@@ -2,8 +2,7 @@ import 'dart:async';
 
 import '../../layers/spinning_wheel_layer.dart';
 
-import '/items/card/card-ui/card_widget.dart';
-import '/items/card/card_logic.dart';
+import '../../logics/colors.dart';
 
 import 'package:flutter/material.dart';
 

@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import '../card_storage.dart';
-import '../card_logic.dart';
-
 import 'package:flutter/material.dart';
+
+import '../../../logics/card_storage.dart';
+import '../../../logics/card_logic.dart';
 
 import '../card-ui/card_widget.dart';
 

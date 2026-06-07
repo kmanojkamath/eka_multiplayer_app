@@ -1,22 +1,20 @@
-import 'package:eka_multiplayer_app/items/card/card_animations/positions.dart';
-import 'package:eka_multiplayer_app/layers/cards_layers/other_player_cards_layers/player3_cards_layer.dart';
-import 'package:eka_multiplayer_app/layers/cards_layers/other_player_cards_layers/player4_cards_layer.dart';
-import 'package:eka_multiplayer_app/layers/cards_layers/other_player_cards_layers/player5_cards_layer.dart';
-import 'package:eka_multiplayer_app/layers/cards_layers/other_player_cards_layers/player6_cards_layer.dart';
-
-import '/items/card/card_animations/card_animations.dart';
-import '/items/card/card_storage.dart';
-
-
-import '/layers/background.dart';
-import '../../layers/cards_layers/other_player_cards_layers/player2_cards_layer.dart';
-import '../../layers/cards_layers/draw_card_layer.dart';
-import '../../layers/cards_layers/top_card.dart';
-import '/layers/color_selector.dart';
-import '../../layers/cards_layers/player_cards_layer.dart';
-
-
 import 'package:flutter/material.dart';
+
+import '../../animations/card_animations/card_animations.dart';
+
+import '../../logics/positions.dart';
+import '../../logics/card_storage.dart';
+
+import '../../layers/background.dart';
+import '../../layers/cards_layers/draw_card_layer.dart';
+import '../../layers/cards_layers/other_player_cards_layers/player2_cards_layer.dart';
+import '../../layers/cards_layers/other_player_cards_layers/player3_cards_layer.dart';
+import '../../layers/cards_layers/other_player_cards_layers/player4_cards_layer.dart';
+import '../../layers/cards_layers/other_player_cards_layers/player5_cards_layer.dart';
+import '../../layers/cards_layers/other_player_cards_layers/player6_cards_layer.dart';
+import '../../layers/cards_layers/player_cards_layer.dart';
+import '../../layers/cards_layers/top_card.dart';
+import '../../layers/color_selector.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});

@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import '../card-ui/back_card_widget.dart';
-import '../card_storage.dart';
-
 import 'package:flutter/material.dart';
+
+import '../card-ui/back_card_widget.dart';
+import '../../../logics/card_storage.dart';
 
 class BackCardController {
   Future<void> Function(double, Duration, Curve)? changeScale;

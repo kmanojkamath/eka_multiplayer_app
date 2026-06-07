@@ -1,6 +1,6 @@
-import 'animated-cards/animated_card.dart';
+import 'colors.dart';
 
-enum CardColor { red, green, blue, yellow, wild }
+import '../items/card/animated-cards/animated_card.dart';
 
 class EkaCard {
   final int ci;

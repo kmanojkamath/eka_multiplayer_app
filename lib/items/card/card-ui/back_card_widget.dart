@@ -1,8 +1,8 @@
-import 'card_widget.dart';
-
-import '../card_logic.dart';
-
 import 'package:flutter/material.dart';
+
+import '../../../logics/colors.dart';
+
+import 'card_widget.dart';
 
 class BackCardWidget extends StatelessWidget {
   const BackCardWidget({super.key});

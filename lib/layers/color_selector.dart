@@ -1,8 +1,8 @@
-import 'package:eka_multiplayer_app/items/card/card-ui/card_widget.dart';
-import 'package:eka_multiplayer_app/items/card/card_logic.dart';
-import 'package:eka_multiplayer_app/items/card/card_storage.dart';
-import 'package:eka_multiplayer_app/items/card/card_animations/positions.dart';
 import 'package:flutter/material.dart';
+
+import '../logics/colors.dart';
+import '../logics/card_storage.dart';
+import '../logics/positions.dart';
 
 class ColorSelector extends StatefulWidget {
   final CardStorage cardStorage;

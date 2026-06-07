@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../card/card_animations/positions.dart';
+import '../../logics/positions.dart';
 
 class NamePlate extends StatelessWidget {
   final Positions positions;

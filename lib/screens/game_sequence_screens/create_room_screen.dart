@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../items/card/card_animations/positions.dart';
-import '../../items/card/card_storage.dart';
+import '../../logics/positions.dart';
+import '../../logics/card_storage.dart';
+
 import '../../items/name_plate/room_id_plate.dart';
 import '../../items/name_plate/room_name_plate.dart';
 import '../../items/start_game_button/start_game_button.dart';
