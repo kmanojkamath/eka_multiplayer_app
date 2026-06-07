@@ -4,7 +4,7 @@ import 'package:eka_multiplayer_app/items/card/animated-cards/animated_player_ca
 
 import 'package:flutter/material.dart';
 
-import '../items/name_plate/name_plate.dart';
+import '../../../items/name_plate/name_plate.dart';
 
 class Player3CardsLayer extends StatefulWidget {
   final CardStorage cardStorage;

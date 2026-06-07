@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import 'create_room_screen.dart';
+import '../game_sequence_screens/create_room_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -69,10 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
       await user!.linkWithCredential(credential);
 
       debugPrint("Guest upgraded to Google account");
-
-      FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-        'name': googleUser.displayName,
-      }, SetOptions(merge: true));
     } on FirebaseAuthException catch (e) {
       debugPrint(e.code);
       debugPrint(e.message);
@@ -237,6 +233,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
 
                         final roomId = await generateUniqueRoomId();
+
+                        FirebaseFirestore.instance
+                            .collection('rooms')
+                            .doc(roomId)
+                            .set({
+                              'turn': 0,
+                              'movingForward': true,
+                              'players': [user?.uid],
+                            });
 
                         Navigator.push(
                           context,

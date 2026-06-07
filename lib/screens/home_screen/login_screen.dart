@@ -3,6 +3,8 @@ import 'package:eka_multiplayer_app/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../logics/name_generator.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -53,8 +55,9 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       UserCredential user = await signInWithGoogle();
       debugPrint(FirebaseAuth.instance.currentUser.toString());
+      int name = generateRandomNameNumber();
       FirebaseFirestore.instance.collection('users').doc(user.user!.uid).set({
-        'name': user.user!.displayName,
+        'name': name,
       }, SetOptions(merge: true));
     } catch (e) {
       debugPrint(e.toString());
@@ -71,8 +74,9 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       UserCredential user = await FirebaseAuth.instance.signInAnonymously();
       debugPrint("Signed in anonymously.");
+      int name = generateRandomNameNumber();
       FirebaseFirestore.instance.collection('users').doc(user.user!.uid).set({
-        'name': user.user!.displayName,
+        'name': name,
       });
     } on FirebaseAuthException catch (e) {
       debugPrint("Code: ${e.code}");

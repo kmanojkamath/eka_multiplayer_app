@@ -4,16 +4,16 @@ import 'package:eka_multiplayer_app/items/card/animated-cards/animated_player_ca
 
 import 'package:flutter/material.dart';
 
-import '../items/name_plate/name_plate.dart';
+import '../../../items/name_plate/name_plate.dart';
 
-class Player6CardsLayer extends StatefulWidget {
+class Player5CardsLayer extends StatefulWidget {
   final CardStorage cardStorage;
-  const Player6CardsLayer(this.cardStorage, {super.key});
+  const Player5CardsLayer(this.cardStorage, {super.key});
   @override
-  State<Player6CardsLayer> createState() => _Player6CardsLayerState();
+  State<Player5CardsLayer> createState() => _Player5CardsLayerState();
 }
 
-class _Player6CardsLayerState extends State<Player6CardsLayer> {
+class _Player5CardsLayerState extends State<Player5CardsLayer> {
   @override
   Widget build(BuildContext context) {
     Positions positions = Positions(
@@ -26,11 +26,11 @@ class _Player6CardsLayerState extends State<Player6CardsLayer> {
           children: [
             Positioned(
               top: positions.screenSize.height * 0.63,
-              left: positions.screenSize.width * 0.74,
-              child: NamePlate(positions, "Player 6"),
+              left: 0,
+              child: NamePlate(positions, "Player 5"),
             ),
             Stack(
-              children: List.generate(widget.cardStorage.player6Card.length, (i) {
+              children: List.generate(widget.cardStorage.player5Card.length, (i) {
                 return AnimatedPlayerCard(
                   widget.cardStorage.player2Card[i],
                   cardScale: positions.drawScale,

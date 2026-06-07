@@ -2,7 +2,7 @@ import 'package:eka_multiplayer_app/items/card/card_animations/positions.dart';
 import 'package:eka_multiplayer_app/items/card/card_storage.dart';
 import 'package:flutter/material.dart';
 
-import '../items/card/animated-cards/animated_card.dart';
+import '../../items/card/animated-cards/animated_card.dart';
 
 class PlayerCardsLayer extends StatefulWidget {
   final CardStorage cardStorage;
