@@ -34,7 +34,12 @@ class _GameInitialiserState extends State<GameInitialiser> {
       Timer(Duration(milliseconds: 4725), () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => GameScreen()),
+          MaterialPageRoute(
+            builder: (context) => GameScreen(
+              roomId: widget.roomId,
+              playerCount: widget.playerCount,
+            ),
+          ),
         );
       });
     });

@@ -1,7 +1,12 @@
 import 'dart:math';
-import 'dart:ui';
+
+import 'package:eka_multiplayer_app/logics/ui_player_number.dart';
+import 'package:flutter/material.dart';
 
 import 'card_storage.dart';
+
+const xaxis = [0.13, 0.24, 0.5, 0.76, 0.87];
+const yaxis = [0.45, 0.12, 0, 0.125, 0.45];
 
 class Positions {
   final CardStorage cardStorage;
@@ -44,14 +49,14 @@ class Positions {
 
   double playerNCardAngle(int i, int playerNumber) {
     final piles = [
+      cardStorage.player1Pile,
       cardStorage.player2Pile,
       cardStorage.player3Pile,
       cardStorage.player4Pile,
       cardStorage.player5Pile,
-      cardStorage.player6Pile,
     ];
 
-    final n = piles[playerNumber - 2].length;
+    final n = piles[playerNumber].length;
 
     double angle = 0.12 * (1 - (n - 1) / 27) * (n + 21) / 21;
     return (i - (n - 1) / 2) * angle;
@@ -59,14 +64,14 @@ class Positions {
 
   Offset playerNCardPosition(int i, int playerNumber) {
     final piles = [
+      cardStorage.player1Pile,
       cardStorage.player2Pile,
       cardStorage.player3Pile,
       cardStorage.player4Pile,
       cardStorage.player5Pile,
-      cardStorage.player6Pile,
     ];
 
-    final n = piles[playerNumber - 2].length;
+    final n = piles[playerNumber].length;
 
     if (i >= n) return Offset(-200, -200);
 
@@ -78,27 +83,29 @@ class Positions {
     final x = i - (n - 1) / 2;
 
     const cardWidth = 188 * 0.4;
+    debugPrint("$screenSize.width");
 
     return Offset(
       x * widthDifference +
-          screenSize.width * 0.87 -
+          screenSize.width *
+              xaxis[uiPlayerNumber(cardStorage.playerCount, playerNumber)] -
           cardWidth * cos(playerNCardAngle(i, playerNumber)) * 0.5,
       (lowest - highest) / ((n / 2) * (n / 2)) * x * x +
           highest +
-          screenSize.height * 0.45,
+          screenSize.height * yaxis[uiPlayerNumber(cardStorage.playerCount, playerNumber)],
     );
   }
 
   double playerNCardScale(int playerNumber) {
     final piles = [
+      cardStorage.player1Pile,
       cardStorage.player2Pile,
       cardStorage.player3Pile,
       cardStorage.player4Pile,
       cardStorage.player5Pile,
-      cardStorage.player6Pile,
     ];
 
-    final n = piles[playerNumber - 2].length;
+    final n = piles[playerNumber].length;
 
     return 0.625 - n / 96;
   }

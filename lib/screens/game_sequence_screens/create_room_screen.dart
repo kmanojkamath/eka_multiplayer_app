@@ -32,18 +32,18 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    RoomNamePlate(playerNumber: 0, roomId: widget.roomId),
                     RoomNamePlate(playerNumber: 1, roomId: widget.roomId),
                     RoomNamePlate(playerNumber: 2, roomId: widget.roomId),
-                    RoomNamePlate(playerNumber: 3, roomId: widget.roomId),
                   ],
                 ),
                 const Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    RoomNamePlate(playerNumber: 3, roomId: widget.roomId),
                     RoomNamePlate(playerNumber: 4, roomId: widget.roomId),
                     RoomNamePlate(playerNumber: 5, roomId: widget.roomId),
-                    RoomNamePlate(playerNumber: 6, roomId: widget.roomId),
                   ],
                 ),
                 const Spacer(flex: 1),
@@ -51,7 +51,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     RoomIdPlate(
-                      Positions(CardStorage(), MediaQuery.of(context).size),
+                      Positions(CardStorage(0), MediaQuery.of(context).size),
                       widget.roomId,
                     ),
                     LiveStartGameButton(roomId: widget.roomId),

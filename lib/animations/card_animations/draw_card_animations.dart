@@ -2,8 +2,8 @@ part of 'card_animations.dart';
 
 extension DrawCardAnimations on CardAnimations {
   Future<void> playerDrawCard(int ci) async {
-    final drawDuration = cardStorage.discardPile.isEmpty ? 100 : 180;
-    final moveDuration = cardStorage.discardPile.isEmpty ? 200 : 360;
+    final drawDuration = positions.cardStorage.discardPile.isEmpty ? 100 : 180;
+    final moveDuration = positions.cardStorage.discardPile.isEmpty ? 200 : 360;
 
     await Future.wait(
       cardAnimator.moveBackCard(
@@ -25,7 +25,7 @@ extension DrawCardAnimations on CardAnimations {
     await Future.wait(cardAnimator.moveBackCard(widthScale: 1, scale: 0.5));
 
     await Future.wait(
-      cardStorage.playerPile.expand(
+      positions.cardStorage.playerPile.expand(
         (i) => cardAnimator.moveCard(
           i,
           position: positions.playerCardPosition(i),
@@ -38,17 +38,17 @@ extension DrawCardAnimations on CardAnimations {
   }
 
   Future<void> playerNDrawCard(int ci, int playerNumber) async {
-    int n = cardStorage.playerNPile(playerNumber).length;
+    int n = positions.cardStorage.playerNPile(playerNumber).length;
 
-    final drawDuration = cardStorage.discardPile.isEmpty ? 100 : 180;
-    final moveDuration = cardStorage.discardPile.isEmpty ? 200 : 360;
+    final drawDuration = positions.cardStorage.discardPile.isEmpty ? 100 : 180;
+    final moveDuration = positions.cardStorage.discardPile.isEmpty ? 200 : 360;
 
     int indexOfPlayerNCard(BackCardController playerNCard) =>
-        cardStorage.playerNCard(playerNumber).indexOf(playerNCard);
+        positions.cardStorage.playerNCard(playerNumber).indexOf(playerNCard);
 
     await Future.wait(
       cardAnimator.movePlayerCard(
-        cardStorage.playerNCard(playerNumber)[n - 1],
+        positions.cardStorage.playerNCard(playerNumber)[n - 1],
         position: positions.drawPosition,
         angle: 0,
         widthScale: 0,
@@ -57,19 +57,26 @@ extension DrawCardAnimations on CardAnimations {
 
     await Future.wait([
       ...cardAnimator.movePlayerCard(
-        cardStorage.playerNCard(playerNumber)[n - 1],
+        positions.cardStorage.playerNCard(playerNumber)[n - 1],
         widthScale: 1,
         position: positions.playerNCardPosition(n - 1, playerNumber),
         angle: positions.playerNCardAngle(n - 1, playerNumber),
         duration: moveDuration,
       ),
-      ...cardStorage.playerNCard(playerNumber)
+      ...positions.cardStorage
+          .playerNCard(playerNumber)
           .getRange(0, n - 1)
           .expand(
             (i) => cardAnimator.movePlayerCard(
               i,
-              position: positions.playerNCardPosition(indexOfPlayerNCard(i), playerNumber),
-              angle: positions.playerNCardAngle(indexOfPlayerNCard(i), playerNumber),
+              position: positions.playerNCardPosition(
+                indexOfPlayerNCard(i),
+                playerNumber,
+              ),
+              angle: positions.playerNCardAngle(
+                indexOfPlayerNCard(i),
+                playerNumber,
+              ),
               duration: drawDuration,
             ),
           ),

@@ -31,7 +31,7 @@ class _ColorSelectorState extends State<ColorSelector> {
 
   @override
   Widget build(BuildContext context) {
-    Positions positions = Positions(CardStorage(), MediaQuery.sizeOf(context));
+    Positions positions = Positions(widget.cardStorage, MediaQuery.sizeOf(context));
     double x = positions.screenSize.width / 17;
     if (show) {
       return Align(

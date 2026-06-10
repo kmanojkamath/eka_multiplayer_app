@@ -64,7 +64,7 @@ class SpinningCircle extends StatelessWidget {
                   children: [
                     ColorSquare(color: colors[playerIndex]),
                     RoomNamePlate(
-                      playerNumber: playerIndex + 1,
+                      playerNumber: playerIndex,
                       roomId: roomId,
                     ),
                     const Spacer(),

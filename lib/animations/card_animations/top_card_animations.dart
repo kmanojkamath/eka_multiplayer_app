@@ -20,7 +20,7 @@ extension TopCardAnimations on CardAnimations {
       ),
     );
 
-    cardStorage.changeDisplayedTopCard();
+    positions.cardStorage.changeDisplayedTopCard();
 
     await Future.wait(
       cardAnimator.moveTopCard(

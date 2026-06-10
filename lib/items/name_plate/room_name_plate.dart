@@ -38,7 +38,7 @@ class _RoomNamePlateState extends State<RoomNamePlate> {
 
         if (!doc.exists) {
           return NamePlate(
-            Positions(CardStorage(), MediaQuery.sizeOf(context)),
+            Positions(CardStorage(0), MediaQuery.sizeOf(context)),
             "Waiting...",
           );
         }
@@ -47,21 +47,21 @@ class _RoomNamePlateState extends State<RoomNamePlate> {
 
         List<String> players = List<String>.from(data['players'] ?? []);
 
-        if (players.length < widget.playerNumber) {
+        if (players.length < widget.playerNumber + 1) {
           return NamePlate(
-            Positions(CardStorage(), MediaQuery.sizeOf(context)),
+            Positions(CardStorage(0), MediaQuery.sizeOf(context)),
             "Waiting...",
           );
         }
 
-        String uid = players[widget.playerNumber - 1];
+        String uid = players[widget.playerNumber];
 
         return FutureBuilder<DocumentSnapshot>(
           future: FirebaseFirestore.instance.collection('users').doc(uid).get(),
           builder: (context, userSnapshot) {
             if (!userSnapshot.hasData) {
               return NamePlate(
-                Positions(CardStorage(), MediaQuery.sizeOf(context)),
+                Positions(CardStorage(0), MediaQuery.sizeOf(context)),
                 "Loading...",
               );
             }
@@ -70,7 +70,7 @@ class _RoomNamePlateState extends State<RoomNamePlate> {
 
             if (!userDoc.exists) {
               return NamePlate(
-                Positions(CardStorage(), MediaQuery.sizeOf(context)),
+                Positions(CardStorage(0), MediaQuery.sizeOf(context)),
                 "Unknown Player",
               );
             }
@@ -78,7 +78,7 @@ class _RoomNamePlateState extends State<RoomNamePlate> {
             final userData = userDoc.data() as Map<String, dynamic>;
 
             return NamePlate(
-              Positions(CardStorage(), MediaQuery.sizeOf(context)),
+              Positions(CardStorage(0), MediaQuery.sizeOf(context)),
               getNameFromNumber(userData['name']),
             );
           },

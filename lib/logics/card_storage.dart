@@ -14,6 +14,10 @@ class CardStorage {
     (i) => EkaCard(i, CardController()),
   );
 
+  final int playerCount;
+
+  CardStorage(this.playerCount);
+
   List<EkaCard> get card => _card;
 
   List<int> deckPile = List.generate(107, (i) {
@@ -24,6 +28,8 @@ class CardStorage {
 
   SplayTreeSet<int> playerPile = SplayTreeSet<int>();
 
+  SplayTreeSet<int> player1Pile = SplayTreeSet<int>();
+
   SplayTreeSet<int> player2Pile = SplayTreeSet<int>();
 
   SplayTreeSet<int> player3Pile = SplayTreeSet<int>();
@@ -32,23 +38,21 @@ class CardStorage {
 
   SplayTreeSet<int> player5Pile = SplayTreeSet<int>();
 
-  SplayTreeSet<int> player6Pile = SplayTreeSet<int>();
-
   SplayTreeSet<int> playerNPile(int playerNumber) {
     switch (playerNumber) {
-      case 2:
+      case 0:
+        return player1Pile;
+      case 1:
         return player2Pile;
-      case 3:
+      case 2:
         return player3Pile;
-      case 4:
+      case 3:
         return player4Pile;
-      case 5:
+      case 4:
         return player5Pile;
-      case 6:
-        return player6Pile;
       default:
         debugPrint("You are trying to access pile of player-$playerNumber");
-        return player2Pile;
+        return player1Pile;
     }
   }
 
@@ -60,43 +64,33 @@ class CardStorage {
 
   BackCardController stationary = BackCardController();
 
-  List<BackCardController> player2Card = List.generate(27, (i) {
-    return BackCardController();
-  });
+  List<BackCardController> player1Card = [];
 
-  List<BackCardController> player3Card = List.generate(27, (i) {
-    return BackCardController();
-  });
+  List<BackCardController> player2Card = [];
 
-  List<BackCardController> player4Card = List.generate(27, (i) {
-    return BackCardController();
-  });
+  List<BackCardController> player3Card = [];
 
-  List<BackCardController> player5Card = List.generate(27, (i) {
-    return BackCardController();
-  });
+  List<BackCardController> player4Card = [];
 
-  List<BackCardController> player6Card = List.generate(27, (i) {
-    return BackCardController();
-  });
+  List<BackCardController> player5Card = [];
 
   List<BackCardController> playerNCard(int playerNumber) {
     switch (playerNumber) {
-      case 2:
+      case 0:
+        return player1Card;
+      case 1:
         return player2Card;
-      case 3:
+      case 2:
         return player3Card;
-      case 4:
+      case 3:
         return player4Card;
-      case 5:
+      case 4:
         return player5Card;
-      case 6:
-        return player6Card;
       default:
         debugPrint(
           "You are trying to access BackCardController of player-$playerNumber",
         );
-        return player2Card;
+        return player1Card;
     }
   }
 
