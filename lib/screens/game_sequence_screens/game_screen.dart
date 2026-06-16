@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eka_multiplayer_app/logics/game_play.dart';
 import 'package:flutter/material.dart';
 
 import '../../animations/card_animations/card_animations.dart';
@@ -28,6 +30,7 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   late CardStorage cardStorage;
   late CardAnimations cardAnimations;
+  late HostGamePlay hostGamePlay;
 
   @override
   void initState() {
@@ -37,6 +40,11 @@ class _GameScreenState extends State<GameScreen> {
       cardAnimations = CardAnimations(
         Positions(cardStorage, MediaQuery.sizeOf(context)),
       );
+      DocumentReference roomRef = FirebaseFirestore.instance.collection('rooms').doc(widget.roomId);
+      hostGamePlay = HostGamePlay(cardAnimations, roomRef);
+
+      await hostGamePlay.gameStart();
+      await hostGamePlay.hostTurn();
     });
   }
 

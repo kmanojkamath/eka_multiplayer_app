@@ -48,30 +48,14 @@ class Positions {
   double get playerCardScale => 1.25 - cardStorage.playerPile.length / 48;
 
   double playerNCardAngle(int i, int playerNumber) {
-    final piles = [
-      cardStorage.player1Pile,
-      cardStorage.player2Pile,
-      cardStorage.player3Pile,
-      cardStorage.player4Pile,
-      cardStorage.player5Pile,
-    ];
-
-    final n = piles[playerNumber].length;
+    final n = cardStorage.playerNPile(playerNumber).length;
 
     double angle = 0.12 * (1 - (n - 1) / 27) * (n + 21) / 21;
     return (i - (n - 1) / 2) * angle;
   }
 
   Offset playerNCardPosition(int i, int playerNumber) {
-    final piles = [
-      cardStorage.player1Pile,
-      cardStorage.player2Pile,
-      cardStorage.player3Pile,
-      cardStorage.player4Pile,
-      cardStorage.player5Pile,
-    ];
-
-    final n = piles[playerNumber].length;
+    final n = cardStorage.playerNPile(playerNumber).length;
 
     if (i >= n) return Offset(-200, -200);
 
@@ -83,7 +67,6 @@ class Positions {
     final x = i - (n - 1) / 2;
 
     const cardWidth = 188 * 0.4;
-    debugPrint("$screenSize.width");
 
     return Offset(
       x * widthDifference +
@@ -92,7 +75,8 @@ class Positions {
           cardWidth * cos(playerNCardAngle(i, playerNumber)) * 0.5,
       (lowest - highest) / ((n / 2) * (n / 2)) * x * x +
           highest +
-          screenSize.height * yaxis[uiPlayerNumber(cardStorage.playerCount, playerNumber)],
+          screenSize.height *
+              yaxis[uiPlayerNumber(cardStorage.playerCount, playerNumber)],
     );
   }
 

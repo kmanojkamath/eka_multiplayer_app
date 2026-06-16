@@ -48,7 +48,7 @@ extension DrawCardAnimations on CardAnimations {
 
     await Future.wait(
       cardAnimator.movePlayerCard(
-        positions.cardStorage.playerNCard(playerNumber)[n - 1],
+        positions.cardStorage.playerNCard(playerNumber).elementAt(n-1),
         position: positions.drawPosition,
         angle: 0,
         widthScale: 0,
@@ -57,7 +57,7 @@ extension DrawCardAnimations on CardAnimations {
 
     await Future.wait([
       ...cardAnimator.movePlayerCard(
-        positions.cardStorage.playerNCard(playerNumber)[n - 1],
+        positions.cardStorage.playerNCard(playerNumber).elementAt(n-1),
         widthScale: 1,
         position: positions.playerNCardPosition(n - 1, playerNumber),
         angle: positions.playerNCardAngle(n - 1, playerNumber),

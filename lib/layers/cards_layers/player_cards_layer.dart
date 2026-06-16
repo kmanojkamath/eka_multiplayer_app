@@ -20,14 +20,13 @@ class _PlayerCardsLayerState extends State<PlayerCardsLayer> {
       builder: (context, constraints) {
         return Stack(
           children: [
-            ...List.generate(widget.cardStorage.playerPile.length, (i) {
+            ...List.generate(108, (i) {
               return AnimatedCard(
                 widget.cardStorage.card[i],
                 widget.cardStorage,
-                cardScale: Positions(widget.cardStorage, MediaQuery.sizeOf(context)).playerCardScale,
-                cardWidthScale: 1,
-                cardPosition: Positions(widget.cardStorage, MediaQuery.sizeOf(context)).playerCardPosition(i),
-                cardAngle: Positions(widget.cardStorage, MediaQuery.sizeOf(context)).playerCardAngle(i),
+                cardScale: 0.75,
+                cardWidthScale: 0,
+                cardPosition: Positions(widget.cardStorage, MediaQuery.sizeOf(context)).drawPosition,
               );
             }),
           ],

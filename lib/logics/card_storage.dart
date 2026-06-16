@@ -41,20 +41,24 @@ class CardStorage {
   SplayTreeSet<int> playerNPile(int playerNumber) {
     switch (playerNumber) {
       case 0:
-        return player1Pile;
+        return playerPile;
       case 1:
-        return player2Pile;
+        return player1Pile;
       case 2:
-        return player3Pile;
+        return player2Pile;
       case 3:
-        return player4Pile;
+        return player3Pile;
       case 4:
+        return player4Pile;
+      case 5:
         return player5Pile;
       default:
         debugPrint("You are trying to access pile of player-$playerNumber");
         return player1Pile;
     }
   }
+
+  bool movingForward = true;
 
   EkaCard get topCard => card[discardPile.last];
 
@@ -64,27 +68,37 @@ class CardStorage {
 
   BackCardController stationary = BackCardController();
 
-  List<BackCardController> player1Card = [];
+  List<BackCardController> player1Card = List.generate(27, (i) {
+    return BackCardController();
+  });
 
-  List<BackCardController> player2Card = [];
+  List<BackCardController> player2Card = List.generate(27, (i) {
+    return BackCardController();
+  });
 
-  List<BackCardController> player3Card = [];
+  List<BackCardController> player3Card = List.generate(27, (i) {
+    return BackCardController();
+  });
 
-  List<BackCardController> player4Card = [];
+  List<BackCardController> player4Card = List.generate(27, (i) {
+    return BackCardController();
+  });
 
-  List<BackCardController> player5Card = [];
+  List<BackCardController> player5Card = List.generate(27, (i) {
+    return BackCardController();
+  });
 
   List<BackCardController> playerNCard(int playerNumber) {
     switch (playerNumber) {
-      case 0:
-        return player1Card;
       case 1:
-        return player2Card;
+        return player1Card;
       case 2:
-        return player3Card;
+        return player2Card;
       case 3:
-        return player4Card;
+        return player3Card;
       case 4:
+        return player4Card;
+      case 5:
         return player5Card;
       default:
         debugPrint(
