@@ -238,8 +238,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             .collection('rooms')
                             .doc(roomId)
                             .set({
-                              'turn': 0,
-                              'movingForward': true,
                               'players': [user?.uid],
                             });
 

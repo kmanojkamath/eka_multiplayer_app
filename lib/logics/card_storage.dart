@@ -123,4 +123,6 @@ class CardStorage {
   ValueNotifier<CardColor> selectedColor = ValueNotifier(CardColor.wild);
 
   late Function showColorSelector;
+
+  int lastLog = 0;
 }

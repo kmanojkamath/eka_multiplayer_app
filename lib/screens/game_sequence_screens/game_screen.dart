@@ -17,10 +17,12 @@ import '../../layers/color_selector.dart';
 class GameScreen extends StatefulWidget {
   final String roomId;
   final int playerCount;
+  final int playerNumber;
   const GameScreen({
     super.key,
     required this.roomId,
     required this.playerCount,
+    required this.playerNumber,
   });
 
   @override
@@ -40,8 +42,14 @@ class _GameScreenState extends State<GameScreen> {
       cardAnimations = CardAnimations(
         Positions(cardStorage, MediaQuery.sizeOf(context)),
       );
-      DocumentReference roomRef = FirebaseFirestore.instance.collection('rooms').doc(widget.roomId);
-      hostGamePlay = HostGamePlay(cardAnimations, roomRef);
+      DocumentReference roomRef = FirebaseFirestore.instance
+          .collection('rooms')
+          .doc(widget.roomId);
+      hostGamePlay = HostGamePlay(
+        cardAnimations,
+        roomRef,
+        startingPlayer: widget.playerNumber,
+      );
 
       await hostGamePlay.gameStart();
       await hostGamePlay.hostTurn();

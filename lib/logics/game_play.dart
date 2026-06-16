@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eka_multiplayer_app/animations/card_animations/card_animations.dart';
-import 'package:eka_multiplayer_app/logics/card_logic.dart';
-import 'package:eka_multiplayer_app/logics/card_storage.dart';
-import 'package:eka_multiplayer_app/logics/colors.dart';
+import 'package:eka_multiplayer_app/logics/game_log.dart';
 import 'package:flutter/foundation.dart';
+
+import '../animations/card_animations/card_animations.dart';
+import 'card_logic.dart';
+import 'card_storage.dart';
+import 'colors.dart';
 
 enum Move {
   hostTurn,
@@ -22,19 +24,23 @@ enum Move {
 class HostGamePlay {
   final CardAnimations cardAnimations;
   final DocumentReference roomRef;
+  final int startingPlayer;
 
-  const HostGamePlay(this.cardAnimations, this.roomRef);
+  const HostGamePlay(this.cardAnimations, this.roomRef, {required this.startingPlayer});
 
   CardStorage get cardStorage => cardAnimations.positions.cardStorage;
   int get playerCount => cardStorage.playerCount;
   SplayTreeSet<int> playerNPile(int playerNumber) =>
       cardStorage.playerNPile(playerNumber);
-  List get deckPile => cardStorage.deckPile;
-  List get discardPile => cardStorage.discardPile;
+  List<int> get deckPile => cardStorage.deckPile;
+  List<int> get discardPile => cardStorage.discardPile;
   EkaCard get topCard => cardStorage.topCard;
   set topCard(int ci) {
     cardStorage.topCard = ci;
   }
+
+  CollectionReference get logsRef => roomRef.collection('logs');
+  int get nextLog => cardStorage.lastLog + 1;
 
   int get selectedCard => cardStorage.selectedCard.value;
   bool get movingForward => cardStorage.movingForward;
@@ -54,6 +60,11 @@ class HostGamePlay {
     discardPile.add(tc);
   }
 
+  Future<void> sendLog(GameLog log) async {
+    await logsRef.add(log.toMap());
+    cardStorage.lastLog++;
+  }
+
   Future<Move> gameStart() async {
     List<List<int>> P = List.filled(playerCount, []);
 
@@ -66,18 +77,12 @@ class HostGamePlay {
       deckPile.insert(0, deckPile.removeLast());
     }
 
-    await roomRef.update({
-      'playerNPile': {for (int i = 0; i < P.length; i++) '$i': P[i]},
-      'deckPile': deckPile,
-    });
-
-    final snap = await roomRef.get();
-
-    int turn = snap['turn'];
+    final log = GameStartLog(1, playerHands: P, deckPile: deckPile);
+    await sendLog(log);
 
     for (int j = 0; j < 7; j++) {
       for (int i = 0; i < playerCount; i++) {
-        int t = (i + turn) % playerCount;
+        int t = (i + startingPlayer) % playerCount;
         int ci = P[t][j];
         playerNPile(t).add(ci);
         if (t != 0) {
@@ -96,7 +101,7 @@ class HostGamePlay {
 
     await cardAnimations.putTopCard();
 
-    return Move.values[turn];
+    return Move.values[startingPlayer];
   }
 
   bool isPlayable(int ci) {
@@ -147,10 +152,8 @@ class HostGamePlay {
 
     int ci = deckPile.removeLast();
 
-    await roomRef.update({
-      'deckPile': FieldValue.arrayRemove([ci]),
-      'playerNPile.0': FieldValue.arrayUnion([ci]),
-    });
+    final log = PlayerDrawLog(nextLog, playerNumber: 0, drawCards: [ci]);
+    await sendLog(log);
 
     playerNPile(0).add(ci);
 
@@ -159,10 +162,24 @@ class HostGamePlay {
     if (isPlayable(ci)) {
       return Move.hostTurn;
     } else if (movingForward) {
+      await roomRef.update({'turn': 1});
       return Move.player1Turn;
     } else {
+      await roomRef.update({'turn': playerCount - 1});
       return Move.values[playerCount - 1];
     }
+  }
+
+  Future<Move> changeTurn(int nextPlayer, {bool? isReverse}) async {
+    final log = ChangeTurnLog(
+      nextLog,
+      nextPlayer: nextPlayer,
+      isReverse: isReverse ?? false,
+    );
+
+    await sendLog(log);
+
+    return Move.values[nextPlayer];
   }
 
   Future<Move> hostTurn() async {
@@ -178,15 +195,34 @@ class HostGamePlay {
 
     playerNPile(0).remove(selectedCard);
 
-    roomRef.update({
-      'playerNPile.0': FieldValue.arrayRemove([selectedCard]),
-      'topCard': selectedCard,
-    });
+    late PlayerPlayLog log;
+
+    if (topCard.isWild) {
+      cardStorage.selectedColor.value = CardColor.wild;
+
+      cardStorage.showColorSelector.call();
+
+      await waitForColor();
+
+      await Future.delayed(Duration(milliseconds: 420));
+
+      log = PlayerPlayLog(
+        nextLog,
+        playerNumber: 0,
+        putCard: selectedCard,
+        color: cardStorage.selectedColor.value,
+      );
+    } else {
+      log = PlayerPlayLog(nextLog, playerNumber: 0, putCard: selectedCard);
+    }
+
+    await sendLog(log);
 
     cardStorage.changeDisplayedTopCard();
 
     if (playerNPile(0).isEmpty) {
-      await roomRef.update({'turn': -1, 'Winner': 0});
+      final log = GameWinLog(nextLog, playerNumber: 0);
+      await sendLog(log);
       return Move.gameWin;
     }
 
@@ -200,12 +236,15 @@ class HostGamePlay {
       final int ci1 = deckPile.removeLast();
       final int ci2 = deckPile.removeLast();
 
-      await roomRef.update({
-        'deckPile': FieldValue.arrayRemove([ci1, ci2]),
-        'playerNPile.1': FieldValue.arrayUnion([ci1, ci2]),
-      });
-
       final prey = movingForward ? 1 : playerCount - 1;
+
+      final log = PlayerDrawLog(
+        nextLog,
+        playerNumber: prey,
+        drawCards: [ci1, ci2],
+      );
+
+      sendLog(log);
 
       playerNPile(prey).add(ci1);
       await cardAnimations.playerNDrawCard(ci1, prey);
@@ -213,91 +252,40 @@ class HostGamePlay {
       await cardAnimations.playerNDrawCard(ci2, prey);
 
       if (movingForward) {
-        await roomRef.update({'turn': 2 % playerCount});
-        return Move.values[2 % playerCount];
+        return changeTurn(2 % playerCount);
       } else {
-        await roomRef.update({'turn': playerCount - 2});
-        return Move.values[playerCount - 2];
+        return changeTurn(playerCount - 2);
       }
-    } else if (topCard.isNumber) {
-      if (movingForward) {
-        await roomRef.update({'turn': 1});
-        return Move.player1Turn;
-      } else {
-        await roomRef.update({'turn': playerCount - 1});
-        return Move.values[playerCount - 1];
-      }
+    } else if (topCard.isNumber || topCard.isWildCard) {
+      return changeTurn(movingForward ? 1 : playerCount - 1);
     } else if (topCard.isReverse) {
       reverse();
-      roomRef.update({'movingForward': movingForward});
-      if (movingForward) {
-        await roomRef.update({'turn': 1});
-        return Move.player1Turn;
-      } else {
-        await roomRef.update({'turn': playerCount - 1});
-        return Move.values[playerCount - 1];
-      }
+      return changeTurn(movingForward ? 1 : playerCount - 1, isReverse: true);
     } else if (topCard.isSkip) {
-      if (movingForward) {
-        await roomRef.update({'turn': 2 % playerCount});
-        return Move.values[2 % playerCount];
-      } else {
-        await roomRef.update({'turn': playerCount - 2});
-        return Move.values[playerCount - 2];
-      }
-    } else if (topCard.isWildCard) {
-      cardStorage.selectedColor.value = CardColor.wild;
-
-      cardStorage.showColorSelector.call();
-
-      await waitForColor();
-
-      await Future.delayed(Duration(milliseconds: 420));
-
-      if (movingForward) {
-        await roomRef.update({'turn': 1});
-        return Move.player1Turn;
-      } else {
-        await roomRef.update({'turn': playerCount - 1});
-        return Move.values[playerCount - 1];
-      }
+      return changeTurn(movingForward ? 2 % playerCount : playerCount - 2);
     } else if (topCard.isWildDrawFour) {
-      cardStorage.selectedColor.value = CardColor.wild;
-
-      cardStorage.showColorSelector.call();
-
-      await waitForColor();
-
-      await Future.delayed(Duration(milliseconds: 420));
-
       if (deckPile.length < 4) reshuffle();
       final List<int> cis = [];
       for (int i = 0; i < 4; i++) {
         cis.add(deckPile.removeLast());
       }
 
-      await roomRef.update({
-        'deckPile': FieldValue.arrayRemove(cis),
-        'playerNPile.1': FieldValue.arrayUnion(cis),
-      });
-
       final prey = movingForward ? 1 : playerCount - 1;
+
+      final log = PlayerDrawLog(nextLog, playerNumber: prey, drawCards: cis);
+
+      await sendLog(log);
 
       for (int i = 0; i < 4; i++) {
         playerNPile(prey).add(cis[i]);
         await cardAnimations.playerNDrawCard(cis[i], prey);
       }
 
-      if (movingForward) {
-        await roomRef.update({'turn': 2 % playerCount});
-        return Move.values[2 % playerCount];
-      } else {
-        await roomRef.update({'turn': playerCount - 2});
-        return Move.values[playerCount - 2];
-      }
+      return changeTurn(movingForward ? 2 % playerCount : playerCount - 2);
     } else {
       debugPrint("TopCard is ${topCard.ci}");
-      return Move.player1Turn;
+      return changeTurn(1);
     }
   }
+  
 }

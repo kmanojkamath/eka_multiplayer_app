@@ -38,6 +38,7 @@ class _GameInitialiserState extends State<GameInitialiser> {
             builder: (context) => GameScreen(
               roomId: widget.roomId,
               playerCount: widget.playerCount,
+              playerNumber: widget.playerNumber,
             ),
           ),
         );

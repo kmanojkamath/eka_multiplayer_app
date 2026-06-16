@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eka_multiplayer_app/logics/game_log.dart';
 import 'package:flutter/material.dart';
 
 import '../../screens/game_sequence_screens/game_initialiser.dart';
@@ -160,15 +161,30 @@ class _LiveStartGameButtonState extends State<LiveStartGameButton> {
 
         if (playerCount > 1) {
           return StartGameButton(
-            onPressed: () {
-              final int playerNumber = Random().nextInt(playerCount) + 1;
-              FirebaseFirestore.instance
+            onPressed: () async {
+              final int playerNumber = Random().nextInt(playerCount);
+              final log = GameInitializationLog(
+                0,
+                playerCount: playerCount,
+                startingPlayer: playerNumber,
+              );
+              await FirebaseFirestore.instance
                   .collection('rooms')
                   .doc(widget.roomId)
-                  .update({'turn': playerNumber});
+                  .collection('logs')
+                  .add(log.toMap());
+              
+              if(!context.mounted) return;
+
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => GameInitialiser(playerCount: playerCount, playerNumber: playerNumber, roomId: widget.roomId)),
+                MaterialPageRoute(
+                  builder: (context) => GameInitialiser(
+                    playerCount: playerCount,
+                    playerNumber: playerNumber,
+                    roomId: widget.roomId,
+                  ),
+                ),
               );
             },
           );
