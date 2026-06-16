@@ -26,7 +26,11 @@ class HostGamePlay {
   final DocumentReference roomRef;
   final int startingPlayer;
 
-  const HostGamePlay(this.cardAnimations, this.roomRef, {required this.startingPlayer});
+  const HostGamePlay(
+    this.cardAnimations,
+    this.roomRef, {
+    required this.startingPlayer,
+  });
 
   CardStorage get cardStorage => cardAnimations.positions.cardStorage;
   int get playerCount => cardStorage.playerCount;
@@ -45,6 +49,11 @@ class HostGamePlay {
   int get selectedCard => cardStorage.selectedCard.value;
   bool get movingForward => cardStorage.movingForward;
 
+  int get turn => cardStorage.turn;
+  set turn(int playerNumber) {
+    cardStorage.turn = playerNumber;
+  }
+
   void reverse() {
     cardStorage.movingForward = !movingForward;
   }
@@ -61,7 +70,7 @@ class HostGamePlay {
   }
 
   Future<void> sendLog(GameLog log) async {
-    await logsRef.add(log.toMap());
+    await logsRef.doc(nextLog.toString()).set(log.toMap());
     cardStorage.lastLog++;
   }
 
@@ -179,6 +188,8 @@ class HostGamePlay {
 
     await sendLog(log);
 
+    turn = nextPlayer;
+
     return Move.values[nextPlayer];
   }
 
@@ -287,5 +298,52 @@ class HostGamePlay {
       return changeTurn(1);
     }
   }
-  
+
+  Future<GameLog> waitForNextLog() async {
+    final snap = await logsRef
+        .doc(nextLog.toString())
+        .snapshots()
+        .firstWhere((snap) => snap.exists);
+
+    cardStorage.lastLog++;
+
+    return snap.toGameLog();
+  }
+
+  Future<Move> processLog() async {
+    final log = await waitForNextLog();
+
+    switch (log) {
+      case ChangeTurnLog(
+        nextPlayer: final nextPlayer,
+        isReverse: final isReverse,
+      ):
+        turn = nextPlayer;
+        if (isReverse) reverse();
+        return Move.values[nextPlayer];
+      case PlayerDrawLog(
+        playerNumber: final playerNumber,
+        drawCards: final drawCards,
+      ):
+        if(deckPile.length < drawCards.length) reshuffle();
+        for (int i = 0; i < drawCards.length; i++) {
+          deckPile.remove(drawCards[i]);
+          playerNPile(playerNumber).add(drawCards[i]);
+
+          await cardAnimations.playerNDrawCard(drawCards[i], playerNumber);
+        }
+        return Move.values[playerNumber];
+      case PlayerPlayLog(playerNumber: final playerNumber, putCard: final putCard):
+        topCard = putCard;
+        playerNPile(playerNumber).remove(playerNumber);
+        await cardAnimations.playerNPlayCard(playerNumber);
+        return Move.values[playerNumber];
+      case GameWinLog(playerNumber: int playerNumber):
+        cardStorage.winner = playerNumber;
+        return Move.gameWin;
+      default:
+        debugPrint("Invalid Log in Host Game Play");
+        return Move.hostTurn;
+    }
+  }
 }

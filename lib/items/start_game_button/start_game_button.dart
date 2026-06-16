@@ -172,9 +172,10 @@ class _LiveStartGameButtonState extends State<LiveStartGameButton> {
                   .collection('rooms')
                   .doc(widget.roomId)
                   .collection('logs')
-                  .add(log.toMap());
-              
-              if(!context.mounted) return;
+                  .doc('0')
+                  .set(log.toMap());
+
+              if (!context.mounted) return;
 
               Navigator.pushReplacement(
                 context,

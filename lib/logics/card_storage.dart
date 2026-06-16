@@ -125,4 +125,8 @@ class CardStorage {
   late Function showColorSelector;
 
   int lastLog = 0;
+
+  int turn = -1;
+
+  int winner = -1;
 }

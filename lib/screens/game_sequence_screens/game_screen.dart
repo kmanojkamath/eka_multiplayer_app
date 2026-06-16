@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eka_multiplayer_app/logics/game_play.dart';
+import 'package:eka_multiplayer_app/logics/name_generator.dart';
+import 'package:eka_multiplayer_app/screens/result_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../animations/card_animations/card_animations.dart';
@@ -34,6 +36,39 @@ class _GameScreenState extends State<GameScreen> {
   late CardAnimations cardAnimations;
   late HostGamePlay hostGamePlay;
 
+  Future<void> processMove(Move nextMove, HostGamePlay hostGamePlay) async {
+    if (nextMove == Move.hostTurn) {
+      nextMove = await hostGamePlay.hostTurn();
+    } else if (nextMove == Move.gameWin) {
+      final roomDoc = await FirebaseFirestore.instance
+          .collection('rooms')
+          .doc(widget.roomId)
+          .get();
+
+      List<dynamic> players = roomDoc['players'];
+
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(players[cardStorage.winner])
+          .get();
+
+      if (!mounted) return;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResultScreen(
+            winnerName: getNameFromNumber(userDoc['name']),
+            didWin: cardStorage.winner == 0,
+          ),
+        ),
+      );
+    } else {
+      nextMove = await hostGamePlay.processLog();
+    }
+    await processMove(nextMove, hostGamePlay);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -52,7 +87,7 @@ class _GameScreenState extends State<GameScreen> {
       );
 
       await hostGamePlay.gameStart();
-      await hostGamePlay.hostTurn();
+      await processMove(Move.values[widget.playerNumber], hostGamePlay);
     });
   }
 
