@@ -182,7 +182,8 @@ class _LiveStartGameButtonState extends State<LiveStartGameButton> {
                 MaterialPageRoute(
                   builder: (context) => GameInitialiser(
                     playerCount: playerCount,
-                    playerNumber: playerNumber,
+                    playerNumber: 0,
+                    startingPlayer: playerNumber,
                     roomId: widget.roomId,
                   ),
                 ),

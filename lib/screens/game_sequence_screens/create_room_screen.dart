@@ -46,7 +46,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                     RoomNamePlate(playerNumber: 5, roomId: widget.roomId),
                   ],
                 ),
-                const Spacer(flex: 1),
+                const Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

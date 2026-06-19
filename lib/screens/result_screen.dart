@@ -26,7 +26,7 @@ class ResultScreen extends StatelessWidget {
             const Spacer(flex: 5),
             Text(
               "$winnerName Wins",
-              style: TextStyle(fontSize: 69, fontWeight: FontWeight.w900),
+              style: TextStyle(fontSize: 42, fontWeight: FontWeight.w900),
             ),
             const Spacer(flex: 3),
           ],

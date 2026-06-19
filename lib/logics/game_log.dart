@@ -64,12 +64,12 @@ class GameInitializationLog extends GameLog {
 
 class GameStartLog extends GameLog {
   final List<List<int>> playerHands;
-  final List<int> deckPile;
+  final int topCard;
 
   const GameStartLog(
     super.index, {
     required this.playerHands,
-    required this.deckPile,
+    required this.topCard,
   });
 
   factory GameStartLog.fromMap(Map<String, dynamic> map, int index) {
@@ -83,7 +83,7 @@ class GameStartLog extends GameLog {
     return GameStartLog(
       index,
       playerHands: playerHands,
-      deckPile: List<int>.from(map['deckPile']),
+      topCard: map['topCard'],
     );
   }
 
@@ -93,7 +93,7 @@ class GameStartLog extends GameLog {
     'playerHands': {
       for (int i = 0; i < playerHands.length; i++) '$i': playerHands[i],
     },
-    'deckPile': deckPile,
+    'topCard': topCard,
     'timestamp': FieldValue.serverTimestamp(),
   };
 }

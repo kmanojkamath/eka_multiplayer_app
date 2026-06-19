@@ -9,12 +9,16 @@ import '../../logics/positions.dart';
 
 class PlayerNCardsLayer extends StatefulWidget {
   final CardStorage cardStorage;
-  final int uiPlayerNumber;
+  final int playerCount;
+  final int playerNumber;
+  final int currentPlayer;
   final String roomId;
   const PlayerNCardsLayer(
     this.cardStorage, {
     super.key,
-    required this.uiPlayerNumber,
+    required this.playerCount,
+    required this.playerNumber,
+    required this.currentPlayer,
     required this.roomId,
   });
   @override
@@ -22,36 +26,38 @@ class PlayerNCardsLayer extends StatefulWidget {
 }
 
 class _PlayerNCardsLayerState extends State<PlayerNCardsLayer> {
+  int localPlayerNumber(int playerNumber) {
+    return (widget.playerCount + playerNumber - widget.currentPlayer) %
+        widget.playerCount;
+  }
+
   @override
   Widget build(BuildContext context) {
     Positions positions = Positions(
       widget.cardStorage,
       MediaQuery.sizeOf(context),
     );
-    const top = [0.184, 0.305, 0.3, 0.63, 0.63];
-    const left = [0.37, 0.11, 0.63, 0, 0.74];
+    const top = [0.63, 0.305, 0.184, 0.3, 0.63];
+    const left = [0, 0.11, 0.37, 0.63, 0.74];
     return LayoutBuilder(
       builder: (context, constraints) {
+        final uiPN = uiPlayerNumber(widget.playerCount, widget.playerNumber);
         return Stack(
           children: [
             Positioned(
-              top: positions.screenSize.height * top[widget.uiPlayerNumber - 1],
-              left:
-                  positions.screenSize.width * left[widget.uiPlayerNumber - 1],
+              top: positions.screenSize.height * top[uiPN],
+              left: positions.screenSize.width * left[uiPN],
               child: RoomNamePlate(
-                playerNumber: realPlayerNumber(
-                  widget.cardStorage.playerCount,
-                  widget.uiPlayerNumber,
-                ),
+                playerNumber: localPlayerNumber(widget.playerNumber),
                 roomId: widget.roomId,
               ),
             ),
             Stack(
               children: List.generate(
-                widget.cardStorage.playerNCard(widget.uiPlayerNumber).length,
+                widget.cardStorage.playerNCard(widget.playerNumber).length,
                 (i) {
                   return AnimatedPlayerCard(
-                    widget.cardStorage.playerNCard(widget.uiPlayerNumber)[i],
+                    widget.cardStorage.playerNCard(widget.playerNumber)[i],
                     cardScale: positions.drawScale,
                     cardWidthScale: 0,
                     cardPosition: positions.drawPosition,

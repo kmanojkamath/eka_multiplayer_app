@@ -38,6 +38,7 @@ extension DrawCardAnimations on CardAnimations {
   }
 
   Future<void> playerNDrawCard(int ci, int playerNumber) async {
+    if(playerNumber==0) return playerDrawCard(ci);
     int n = positions.cardStorage.playerNPile(playerNumber).length;
 
     final drawDuration = positions.cardStorage.discardPile.isEmpty ? 100 : 180;

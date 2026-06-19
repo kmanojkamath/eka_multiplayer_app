@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eka_multiplayer_app/screens/game_sequence_screens/join_room_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -241,6 +242,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               'players': [user?.uid],
                             });
 
+                        if (!context.mounted) return;
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -256,7 +259,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       text: "Join Room",
                       icon: Icons.door_front_door,
                       onPressed: () {
-                        debugPrint("Join Room");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => JoinRoomScreen(),
+                          ),
+                        );
                       },
                     ),
 

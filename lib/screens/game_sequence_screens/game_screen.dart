@@ -19,11 +19,13 @@ import '../../layers/color_selector.dart';
 class GameScreen extends StatefulWidget {
   final String roomId;
   final int playerCount;
+  final int startingPlayer;
   final int playerNumber;
   const GameScreen({
     super.key,
     required this.roomId,
     required this.playerCount,
+    required this.startingPlayer,
     required this.playerNumber,
   });
 
@@ -36,7 +38,7 @@ class _GameScreenState extends State<GameScreen> {
   late CardAnimations cardAnimations;
   late HostGamePlay hostGamePlay;
 
-  Future<void> processMove(Move nextMove, HostGamePlay hostGamePlay) async {
+  Future<void> processHostMove(Move nextMove, HostGamePlay hostGamePlay) async {
     if (nextMove == Move.hostTurn) {
       nextMove = await hostGamePlay.hostTurn();
     } else if (nextMove == Move.gameWin) {
@@ -59,14 +61,54 @@ class _GameScreenState extends State<GameScreen> {
         MaterialPageRoute(
           builder: (context) => ResultScreen(
             winnerName: getNameFromNumber(userDoc['name']),
-            didWin: cardStorage.winner == 0,
+            didWin: cardStorage.winner == 0 ? true : false,
           ),
         ),
       );
+      return;
     } else {
       nextMove = await hostGamePlay.processLog();
     }
-    await processMove(nextMove, hostGamePlay);
+    await processHostMove(nextMove, hostGamePlay);
+  }
+
+  Future<void> processPlayerMove(
+    Move nextMove,
+    PlayerNGamePlay playerNGamePlay,
+  ) async {
+    if (nextMove == Move.hostTurn) {
+      nextMove = await playerNGamePlay.playerTurn();
+    } else if (nextMove == Move.gameWin) {
+      final roomDoc = await FirebaseFirestore.instance
+          .collection('rooms')
+          .doc(widget.roomId)
+          .get();
+
+      List<dynamic> players = roomDoc['players'];
+
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(players[cardStorage.winner])
+          .get();
+
+      if (!mounted) return;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResultScreen(
+            winnerName: getNameFromNumber(userDoc['name']),
+            didWin: cardStorage.winner == playerNGamePlay.currentPlayer
+                ? true
+                : false,
+          ),
+        ),
+      );
+      return;
+    } else {
+      nextMove = await playerNGamePlay.processLog();
+    }
+    await processPlayerMove(nextMove, playerNGamePlay);
   }
 
   @override
@@ -80,14 +122,25 @@ class _GameScreenState extends State<GameScreen> {
       DocumentReference roomRef = FirebaseFirestore.instance
           .collection('rooms')
           .doc(widget.roomId);
-      hostGamePlay = HostGamePlay(
-        cardAnimations,
-        roomRef,
-        startingPlayer: widget.playerNumber,
-      );
+      if (widget.playerNumber == 0) {
+        hostGamePlay = HostGamePlay(
+          cardAnimations,
+          roomRef,
+          startingPlayer: widget.startingPlayer,
+        );
 
-      await hostGamePlay.gameStart();
-      await processMove(Move.values[widget.playerNumber], hostGamePlay);
+        await hostGamePlay.gameStart();
+        await processHostMove(Move.values[widget.startingPlayer], hostGamePlay);
+      } else {
+        PlayerNGamePlay playerNGamePlay = PlayerNGamePlay(
+          widget.playerNumber,
+          cardAnimations: cardAnimations,
+          roomRef: roomRef,
+          startingPlayer: widget.startingPlayer,
+        );
+        Move nextMove = await playerNGamePlay.gameStart();
+        await processPlayerMove(nextMove, playerNGamePlay);
+      }
     });
   }
 
@@ -104,7 +157,9 @@ class _GameScreenState extends State<GameScreen> {
             ...List.generate(widget.playerCount - 1, (i) {
               return PlayerNCardsLayer(
                 cardStorage,
-                uiPlayerNumber: i + 1,
+                playerNumber: i + 1,
+                playerCount: widget.playerCount,
+                currentPlayer: widget.playerNumber,
                 roomId: widget.roomId,
               );
             }),

@@ -11,11 +11,13 @@ import 'game_screen.dart';
 class GameInitialiser extends StatefulWidget {
   final int playerCount;
   final int playerNumber;
+  final int startingPlayer;
   final String roomId;
   const GameInitialiser({
     super.key,
     required this.playerCount,
     required this.playerNumber,
+    required this.startingPlayer,
     required this.roomId,
   });
 
@@ -39,6 +41,7 @@ class _GameInitialiserState extends State<GameInitialiser> {
               roomId: widget.roomId,
               playerCount: widget.playerCount,
               playerNumber: widget.playerNumber,
+              startingPlayer: widget.startingPlayer,
             ),
           ),
         );
@@ -64,7 +67,7 @@ class _GameInitialiserState extends State<GameInitialiser> {
         ),
         child: Center(
           child: SpinningCircle(
-            playerNumber: widget.playerNumber,
+            playerNumber: widget.startingPlayer,
             playerCount: widget.playerCount,
             startTurn: startTurn,
             roomId: widget.roomId,
