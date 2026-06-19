@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../logics/colors.dart';
-import '../logics/card_storage.dart';
-import '../logics/positions.dart';
+import '../helpers/colors.dart';
+import '../game/models/card_storage.dart';
+import '../game/models/positions.dart';
 
 class ColorSelector extends StatefulWidget {
   final CardStorage cardStorage;

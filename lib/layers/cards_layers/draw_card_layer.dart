@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../logics/card_storage.dart';
-import '../../logics/positions.dart';
+import '../../game/models/card_storage.dart';
+import '../../game/models/positions.dart';
 
-import '../../items/card/animated-cards/animated_back_card.dart';
+import '../../widgets/card/animated-cards/animated_back_card.dart';
 
 class DrawCardLayer extends StatefulWidget {
   final CardStorage cardStorage;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../items/card/animated-cards/animated_back_card.dart';
+import '../../widgets/card/animated-cards/animated_back_card.dart';
 
-import '../../logics/positions.dart';
+import '../../game/models/positions.dart';
 
 import '../card_animators/card_animator.dart';
 

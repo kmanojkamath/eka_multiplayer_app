@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../items/card/card-ui/card_widget.dart';
+import '../../widgets/card/card-ui/card_widget.dart';
 
-import '../../logics/positions.dart';
-import '../../logics/card_logic.dart';
-import '../../logics/card_storage.dart';
+import '../../game/models/positions.dart';
+import '../../game/models/card_logic.dart';
+import '../../game/models/card_storage.dart';
 
 class TopCard extends StatefulWidget {
   final CardStorage cardStorage;

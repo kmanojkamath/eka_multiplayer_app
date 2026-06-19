@@ -3,7 +3,7 @@ import 'package:eka_multiplayer_app/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../logics/name_generator.dart';
+import '../../helpers/name_generator.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

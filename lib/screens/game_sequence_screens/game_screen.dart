@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eka_multiplayer_app/logics/game_play.dart';
-import 'package:eka_multiplayer_app/logics/name_generator.dart';
+import 'package:eka_multiplayer_app/game/player_logic/player_game_play.dart';
+import 'package:eka_multiplayer_app/game/models/move.dart';
+import 'package:eka_multiplayer_app/helpers/name_generator.dart';
 import 'package:eka_multiplayer_app/screens/result_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../animations/card_animations/card_animations.dart';
 
+import '../../game/host_logic/host_game_play.dart';
 import '../../layers/cards_layers/player_n_cards_layer.dart';
-import '../../logics/positions.dart';
-import '../../logics/card_storage.dart';
+import '../../game/models/positions.dart';
+import '../../game/models/card_storage.dart';
 
 import '../../layers/background.dart';
 import '../../layers/cards_layers/draw_card_layer.dart';
@@ -39,8 +41,8 @@ class _GameScreenState extends State<GameScreen> {
   late HostGamePlay hostGamePlay;
 
   Future<void> processHostMove(Move nextMove, HostGamePlay hostGamePlay) async {
-    if (nextMove == Move.hostTurn) {
-      nextMove = await hostGamePlay.hostTurn();
+    if (nextMove == Move.playerTurn) {
+      nextMove = await hostGamePlay.playerTurn();
     } else if (nextMove == Move.gameWin) {
       final roomDoc = await FirebaseFirestore.instance
           .collection('rooms')
@@ -74,9 +76,9 @@ class _GameScreenState extends State<GameScreen> {
 
   Future<void> processPlayerMove(
     Move nextMove,
-    PlayerNGamePlay playerNGamePlay,
+    PlayerGamePlay playerNGamePlay,
   ) async {
-    if (nextMove == Move.hostTurn) {
+    if (nextMove == Move.playerTurn) {
       nextMove = await playerNGamePlay.playerTurn();
     } else if (nextMove == Move.gameWin) {
       final roomDoc = await FirebaseFirestore.instance
@@ -132,7 +134,7 @@ class _GameScreenState extends State<GameScreen> {
         await hostGamePlay.gameStart();
         await processHostMove(Move.values[widget.startingPlayer], hostGamePlay);
       } else {
-        PlayerNGamePlay playerNGamePlay = PlayerNGamePlay(
+        PlayerGamePlay playerNGamePlay = PlayerGamePlay(
           widget.playerNumber,
           cardAnimations: cardAnimations,
           roomRef: roomRef,

@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eka_multiplayer_app/items/name_plate/join_room_plate.dart';
-import 'package:eka_multiplayer_app/logics/game_log.dart';
+import 'package:eka_multiplayer_app/widgets/name_plate/join_room_plate.dart';
+import 'package:eka_multiplayer_app/game/models/game_log.dart';
 import 'package:eka_multiplayer_app/screens/game_sequence_screens/game_initialiser.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../logics/positions.dart';
-import '../../logics/card_storage.dart';
+import '../../game/models/positions.dart';
+import '../../game/models/card_storage.dart';
 
-import '../../items/name_plate/room_id_plate.dart';
-import '../../items/name_plate/room_name_plate.dart';
+import '../../widgets/name_plate/room_id_plate.dart';
+import '../../widgets/name_plate/room_name_plate.dart';
 
 import '../../layers/background.dart';
 

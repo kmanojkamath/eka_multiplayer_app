@@ -1,11 +1,11 @@
-import 'package:eka_multiplayer_app/items/name_plate/room_name_plate.dart';
-import 'package:eka_multiplayer_app/logics/ui_player_number.dart';
+import 'package:eka_multiplayer_app/widgets/name_plate/room_name_plate.dart';
+import 'package:eka_multiplayer_app/helpers/ui_player_number.dart';
 import 'package:flutter/material.dart';
 
-import '../../items/card/animated-cards/animated_player_card.dart';
+import '../../widgets/card/animated-cards/animated_player_card.dart';
 
-import '../../logics/card_storage.dart';
-import '../../logics/positions.dart';
+import '../../game/models/card_storage.dart';
+import '../../game/models/positions.dart';
 
 class PlayerNCardsLayer extends StatefulWidget {
   final CardStorage cardStorage;

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../logics/positions.dart';
-import '../../logics/card_storage.dart';
+import '../../game/models/positions.dart';
+import '../../game/models/card_storage.dart';
 
-import '../../items/name_plate/room_id_plate.dart';
-import '../../items/name_plate/room_name_plate.dart';
-import '../../items/start_game_button/start_game_button.dart';
+import '../../widgets/name_plate/room_id_plate.dart';
+import '../../widgets/name_plate/room_name_plate.dart';
+import '../../widgets/start_game_button/start_game_button.dart';
 
 import '../../layers/background.dart';
 

@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../items/name_plate/color_square.dart';
-import '../items/name_plate/room_name_plate.dart';
-import '../items/spinning_wheel/pointer_circle.dart';
-import '../items/spinning_wheel/spinning_wheel.dart';
-import '../items/spinning_wheel/toss_wheel.dart';
+import '../widgets/name_plate/color_square.dart';
+import '../widgets/name_plate/room_name_plate.dart';
+import '../widgets/spinning_wheel/pointer_circle.dart';
+import '../widgets/spinning_wheel/spinning_wheel.dart';
+import '../widgets/spinning_wheel/toss_wheel.dart';
 
 class SpinningCircle extends StatelessWidget {
   final int playerNumber;

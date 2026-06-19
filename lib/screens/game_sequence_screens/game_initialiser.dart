@@ -2,7 +2,7 @@ import 'dart:async';
 
 import '../../layers/spinning_wheel_layer.dart';
 
-import '../../logics/colors.dart';
+import '../../helpers/colors.dart';
 
 import 'package:flutter/material.dart';
 
