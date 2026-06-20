@@ -1,11 +1,19 @@
 part of '../host_game_play.dart';
 
 extension Waiters on HostGamePlay {
+  Future<void> waitUntilFalseOrTimeout() async {
+    final timeout = DateTime.now().add(const Duration(milliseconds: 500));
+
+    while (_cardStorage.canDraw && DateTime.now().isBefore(timeout)) {
+      await Future.delayed(const Duration(milliseconds: 10));
+    }
+  }
+
   Future<int> _waitForPlayer() async {
     if (_playablePlayerCards.isEmpty) {
       _cardStorage.canDraw = true;
       while (_cardStorage.canDraw) {
-        await Future.delayed(Duration(milliseconds: 675));
+        await waitUntilFalseOrTimeout();
         if (!_cardStorage.canDraw) break;
         await _cardAnimations.drawIndicator();
       }

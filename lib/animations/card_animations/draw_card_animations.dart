@@ -9,6 +9,7 @@ extension DrawCardAnimations on CardAnimations {
       cardAnimator.moveBackCard(
         widthScale: 0,
         scale: 0.75,
+        angle: 0,
         duration: drawDuration,
       ),
     );
@@ -84,38 +85,64 @@ extension DrawCardAnimations on CardAnimations {
     ]);
   }
 
+  bool get _canDraw => positions.cardStorage.canDraw;
+
   Future<void> drawIndicator() async {
+    if (!_canDraw) return;
+    await Future.wait(
+      cardAnimator.moveBackCard(
+        scale: 0.575,
+        angle: right ? 0.06 : -0.06,
+        duration: 75,
+      ),
+    );
+    if (!_canDraw) return;
     await Future.wait(
       cardAnimator.moveBackCard(
         scale: 0.6,
         angle: right ? 0.12 : -0.12,
-        scaleDuration: 100,
-        angleDuration: 150,
+        scaleDuration: 25,
+        angleDuration: 75,
       ),
     );
+    if (!_canDraw) return;
     await Future.wait(
       cardAnimator.moveBackCard(angle: right ? -0.12 : 0.12, duration: 75),
     );
+    if (!_canDraw) return;
     await Future.wait(
       cardAnimator.moveBackCard(angle: right ? 0.12 : -0.12, duration: 75),
     );
+    if (!_canDraw) return;
     await Future.wait(
       cardAnimator.moveBackCard(angle: right ? -0.12 : 0.12, duration: 75),
     );
+    if (!_canDraw) return;
     await Future.wait(
       cardAnimator.moveBackCard(angle: right ? 0.12 : -0.12, duration: 75),
     );
+    if (!_canDraw) return;
     await Future.wait(
       cardAnimator.moveBackCard(angle: right ? -0.12 : 0.12, duration: 75),
     );
+    if (!_canDraw) return;
+    await Future.wait(
+      cardAnimator.moveBackCard(
+        scale: 0.525,
+        angle: right ? -0.06 : 0.06,
+        duration: 75,
+      ),
+    );
+    if (!_canDraw) return;
     await Future.wait(
       cardAnimator.moveBackCard(
         scale: 0.5,
         angle: 0,
-        scaleDuration: 100,
-        angleDuration: 150,
+        scaleDuration: 25,
+        angleDuration: 75,
       ),
     );
+    if (!_canDraw) return;
     right = !right;
   }
 }
