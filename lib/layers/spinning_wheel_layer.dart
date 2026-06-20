@@ -1,9 +1,11 @@
 import 'dart:math';
 
+import 'package:eka_multiplayer_app/game/models/card_storage.dart';
+import 'package:eka_multiplayer_app/game/models/positions.dart';
+import 'package:eka_multiplayer_app/widgets/name_plate/name_plate.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/name_plate/color_square.dart';
-import '../widgets/name_plate/room_name_plate.dart';
 import '../widgets/spinning_wheel/pointer_circle.dart';
 import '../widgets/spinning_wheel/spinning_wheel.dart';
 import '../widgets/spinning_wheel/toss_wheel.dart';
@@ -12,13 +14,13 @@ class SpinningCircle extends StatelessWidget {
   final int playerNumber;
   final int playerCount;
   final bool startTurn;
-  final String roomId;
+  final List<String> players;
   const SpinningCircle({
     super.key,
     required this.playerNumber,
     required this.playerCount,
     required this.startTurn,
-    required this.roomId,
+    required this.players,
   });
 
   @override
@@ -63,9 +65,9 @@ class SpinningCircle extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     ColorSquare(color: colors[playerIndex]),
-                    RoomNamePlate(
-                      playerNumber: playerIndex,
-                      roomId: roomId,
+                    NamePlate(
+                      Positions(CardStorage(playerCount), screenSize),
+                      players[playerIndex],
                     ),
                     const Spacer(),
                   ],

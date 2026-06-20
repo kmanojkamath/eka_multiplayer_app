@@ -129,4 +129,6 @@ class CardStorage {
   int turn = -1;
 
   int winner = -1;
+
+  List<String> playerNames = [];
 }

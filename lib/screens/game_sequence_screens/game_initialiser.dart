@@ -12,6 +12,7 @@ class GameInitialiser extends StatefulWidget {
   final int playerCount;
   final int playerNumber;
   final int startingPlayer;
+  final List<String> players;
   final String roomId;
   const GameInitialiser({
     super.key,
@@ -19,6 +20,7 @@ class GameInitialiser extends StatefulWidget {
     required this.playerNumber,
     required this.startingPlayer,
     required this.roomId,
+    required this.players
   });
 
   @override
@@ -42,6 +44,7 @@ class _GameInitialiserState extends State<GameInitialiser> {
               playerCount: widget.playerCount,
               playerNumber: widget.playerNumber,
               startingPlayer: widget.startingPlayer,
+              players: widget.players,
             ),
           ),
         );
@@ -70,7 +73,7 @@ class _GameInitialiserState extends State<GameInitialiser> {
             playerNumber: widget.startingPlayer,
             playerCount: widget.playerCount,
             startTurn: startTurn,
-            roomId: widget.roomId,
+            players: widget.players,
           ),
         ),
       ),

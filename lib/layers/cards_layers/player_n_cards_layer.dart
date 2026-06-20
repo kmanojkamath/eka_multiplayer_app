@@ -1,4 +1,4 @@
-import 'package:eka_multiplayer_app/widgets/name_plate/room_name_plate.dart';
+import 'package:eka_multiplayer_app/widgets/name_plate/name_plate.dart';
 import 'package:eka_multiplayer_app/helpers/ui_player_number.dart';
 import 'package:flutter/material.dart';
 
@@ -12,14 +12,14 @@ class PlayerNCardsLayer extends StatefulWidget {
   final int playerCount;
   final int playerNumber;
   final int currentPlayer;
-  final String roomId;
+  final List<String> names;
   const PlayerNCardsLayer(
     this.cardStorage, {
     super.key,
     required this.playerCount,
     required this.playerNumber,
     required this.currentPlayer,
-    required this.roomId,
+    required this.names,
   });
   @override
   State<PlayerNCardsLayer> createState() => _PlayerNCardsLayerState();
@@ -47,9 +47,9 @@ class _PlayerNCardsLayerState extends State<PlayerNCardsLayer> {
             Positioned(
               top: positions.screenSize.height * top[uiPN],
               left: positions.screenSize.width * left[uiPN],
-              child: RoomNamePlate(
-                playerNumber: localPlayerNumber(widget.playerNumber),
-                roomId: widget.roomId,
+              child: NamePlate(
+                positions,
+                widget.names[localPlayerNumber(widget.playerNumber)],
               ),
             ),
             Stack(

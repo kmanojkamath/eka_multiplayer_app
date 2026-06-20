@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../../game/models/positions.dart';
 import '../../game/models/card_storage.dart';
 
+import '../../helpers/name_generator.dart';
 import '../../widgets/name_plate/room_id_plate.dart';
 import '../../widgets/name_plate/room_name_plate.dart';
 
@@ -36,6 +37,26 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
     final log = snap.toGameLog() as GameInitializationLog;
 
+    final room = await FirebaseFirestore.instance
+        .collection('rooms')
+        .doc(roomId)
+        .get();
+
+    final players = room.data()!['players'];
+
+    List<String> splayers = [];
+
+    for (dynamic player in players) {
+      String splayer = player.toString();
+      final user = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(splayer)
+          .get();
+
+      splayer = getNameFromNumber(user.data()!['name']);
+      splayers.add(splayer);
+    }
+
     if (!mounted) return;
 
     Navigator.pushReplacement(
@@ -46,6 +67,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
           startingPlayer: log.startingPlayer,
           playerNumber: playerNumber,
           roomId: roomId,
+          players: splayers,
         ),
       ),
     );

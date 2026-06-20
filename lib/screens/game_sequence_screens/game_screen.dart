@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eka_multiplayer_app/game/player_logic/player_game_play.dart';
 import 'package:eka_multiplayer_app/game/models/move.dart';
-import 'package:eka_multiplayer_app/helpers/name_generator.dart';
 import 'package:eka_multiplayer_app/screens/game_sequence_screens/result_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -23,12 +22,14 @@ class GameScreen extends StatefulWidget {
   final int playerCount;
   final int startingPlayer;
   final int playerNumber;
+  final List<String> players;
   const GameScreen({
     super.key,
     required this.roomId,
     required this.playerCount,
     required this.startingPlayer,
     required this.playerNumber,
+    required this.players,
   });
 
   @override
@@ -44,25 +45,12 @@ class _GameScreenState extends State<GameScreen> {
     if (nextMove == Move.playerTurn) {
       nextMove = await hostGamePlay.playerTurn();
     } else if (nextMove == Move.gameWin) {
-      final roomDoc = await FirebaseFirestore.instance
-          .collection('rooms')
-          .doc(widget.roomId)
-          .get();
-
-      List<dynamic> players = roomDoc['players'];
-
-      final userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(players[cardStorage.winner])
-          .get();
-
       if (!mounted) return;
-
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => ResultScreen(
-            winnerName: getNameFromNumber(userDoc['name']),
+            winnerName: cardStorage.playerNames[cardStorage.winner],
             didWin: cardStorage.winner == 0 ? true : false,
           ),
         ),
@@ -81,25 +69,12 @@ class _GameScreenState extends State<GameScreen> {
     if (nextMove == Move.playerTurn) {
       nextMove = await playerNGamePlay.playerTurn();
     } else if (nextMove == Move.gameWin) {
-      final roomDoc = await FirebaseFirestore.instance
-          .collection('rooms')
-          .doc(widget.roomId)
-          .get();
-
-      List<dynamic> players = roomDoc['players'];
-
-      final userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(players[cardStorage.winner])
-          .get();
-
       if (!mounted) return;
-
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => ResultScreen(
-            winnerName: getNameFromNumber(userDoc['name']),
+            winnerName: cardStorage.playerNames[cardStorage.winner],
             didWin: cardStorage.winner == playerNGamePlay.currentPlayer
                 ? true
                 : false,
@@ -117,6 +92,7 @@ class _GameScreenState extends State<GameScreen> {
   void initState() {
     super.initState();
     cardStorage = CardStorage(widget.playerCount);
+    cardStorage.playerNames = widget.players;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       cardAnimations = CardAnimations(
         Positions(cardStorage, MediaQuery.sizeOf(context)),
@@ -162,7 +138,7 @@ class _GameScreenState extends State<GameScreen> {
                 playerNumber: i + 1,
                 playerCount: widget.playerCount,
                 currentPlayer: widget.playerNumber,
-                roomId: widget.roomId,
+                names: widget.players,
               );
             }),
             DrawCardLayer(cardStorage),

@@ -1,7 +1,7 @@
-
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eka_multiplayer_app/helpers/name_generator.dart';
 import 'package:flutter/material.dart';
 
 import '../../game/models/game_log.dart';
@@ -56,6 +56,27 @@ class _LiveStartGameButtonState extends State<LiveStartGameButton> {
                   .doc('0')
                   .set(log.toMap());
 
+              final room = await FirebaseFirestore.instance
+                  .collection('rooms')
+                  .doc(widget.roomId)
+                  .get();
+
+              final players = room.data()!['players'];
+
+              List<String> splayers = [];
+
+              for (dynamic player in players) {
+                String splayer = player.toString();
+
+                final user = await FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(player)
+                    .get();
+
+                splayer = getNameFromNumber(user.data()!['name']);
+                splayers.add(splayer);
+              }
+
               if (!context.mounted) return;
 
               Navigator.pushReplacement(
@@ -66,6 +87,7 @@ class _LiveStartGameButtonState extends State<LiveStartGameButton> {
                     playerNumber: 0,
                     startingPlayer: playerNumber,
                     roomId: widget.roomId,
+                    players: splayers,
                   ),
                 ),
               );
