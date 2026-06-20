@@ -1,8 +1,15 @@
 part of '../host_game_play.dart';
 
 extension Waiters on HostGamePlay {
-  Future<void> _waitForPlayer() {
-    if (_playablePlayerCards.isEmpty) _cardStorage.canDraw = true;
+  Future<int> _waitForPlayer() async {
+    if (_playablePlayerCards.isEmpty) {
+      _cardStorage.canDraw = true;
+      while (_cardStorage.canDraw) {
+        await Future.delayed(Duration(milliseconds: 675));
+        if (!_cardStorage.canDraw) break;
+        await _cardAnimations.drawIndicator();
+      }
+    }
 
     final completer = Completer<int>();
 
@@ -40,5 +47,4 @@ extension Waiters on HostGamePlay {
 
     return snap.toGameLog();
   }
-
 }

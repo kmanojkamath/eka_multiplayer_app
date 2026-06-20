@@ -17,4 +17,6 @@ class CardAnimations {
 
   CardAnimations(this.positions)
     : cardAnimator = CardAnimator(positions.cardStorage);
+
+  bool right = true;
 }

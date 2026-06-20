@@ -178,10 +178,12 @@ class _AnimatedBackCardState extends State<AnimatedBackCard>
         onTap: () async {
           if (widget.cardStorage.canDraw) {
             widget.cardStorage.canDraw = false;
-            if (widget.cardStorage.selectedCard.value != -1)
+            await Future.delayed(Duration(milliseconds: 675));
+            if (widget.cardStorage.selectedCard.value != -1) {
               widget.cardStorage.selectedCard.value = -1;
-            else
+            } else {
               widget.cardStorage.selectedCard.value = -2;
+            }
           }
         },
         child: BackCardWidget(),

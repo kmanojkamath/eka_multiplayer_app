@@ -11,8 +11,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   if (kDebugMode) {
-    await FirebaseAuth.instance.useAuthEmulator('10.170.16.251', 9099);
-    FirebaseFirestore.instance.useFirestoreEmulator('10.170.16.251', 8080);
+    await FirebaseAuth.instance.useAuthEmulator('10.0.2.2', 9099);
+    FirebaseFirestore.instance.useFirestoreEmulator('10.0.2.2', 8080);
     await GoogleSignIn.instance.initialize(
       serverClientId:
           "766717220987-te3759cpj5cijdrlo6r2g6fi97ucmdnk.apps.googleusercontent.com",
