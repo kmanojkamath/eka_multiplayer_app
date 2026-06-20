@@ -5,7 +5,7 @@ import '../../game/models/card_storage.dart';
 
 import '../../widgets/name_plate/room_id_plate.dart';
 import '../../widgets/name_plate/room_name_plate.dart';
-import '../../widgets/start_game_button/start_game_button.dart';
+import '../../widgets/start_game_button/live_game_button.dart';
 
 import '../../layers/background.dart';
 

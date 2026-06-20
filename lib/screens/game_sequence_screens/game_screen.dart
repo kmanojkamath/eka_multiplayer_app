@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eka_multiplayer_app/game/player_logic/player_game_play.dart';
 import 'package:eka_multiplayer_app/game/models/move.dart';
 import 'package:eka_multiplayer_app/helpers/name_generator.dart';
-import 'package:eka_multiplayer_app/screens/result_screen.dart';
+import 'package:eka_multiplayer_app/screens/game_sequence_screens/result_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../animations/card_animations/card_animations.dart';
