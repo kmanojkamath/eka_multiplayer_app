@@ -22,8 +22,8 @@ extension GettersSetters on PlayerGamePlay {
   CardColor get _selectedColor => _cardStorage.selectedColor.value;
   bool get _movingForward => _cardStorage.movingForward;
 
-  Move get _turn => _cardStorage.turn == 0 ? Move.playerTurn : Move.processLog;
+  Move get _turn => _cardStorage.turn.value == 0 ? Move.playerTurn : Move.processLog;
   set _turn(int playerNumber) {
-    _cardStorage.turn = playerNumber;
+    _cardStorage.turn.value = playerNumber;
   }
 }

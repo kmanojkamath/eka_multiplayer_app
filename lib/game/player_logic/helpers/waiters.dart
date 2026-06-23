@@ -9,6 +9,8 @@ extension Waiters on PlayerGamePlay {
 
     _cardStorage.lastLog++;
 
+    _cardStorage.timer.stop();
+
     return snap.toGameLog();
   }
 

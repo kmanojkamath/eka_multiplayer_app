@@ -26,9 +26,13 @@ extension PlayerTurn on PlayerGamePlay {
   }
 
   Future<Move> playerTurn() async {
+    _cardStorage.timer.forward(from: 0);
+
     await cardAnimations.showPlayableCards();
 
     await _waitForPlayer();
+
+    _cardStorage.timer.stop();
 
     if (_selectedCard < 0) return _drawForPlayer();
 
@@ -41,11 +45,15 @@ extension PlayerTurn on PlayerGamePlay {
     late PlayerPlayLog log;
 
     if (_topCard.isWild) {
+      _cardStorage.timer.forward();
+
       _changeColor(CardColor.wild);
 
       _cardStorage.showColorSelector.call();
 
       await _waitForColor();
+
+      _cardStorage.timer.stop();
 
       await Future.delayed(Duration(milliseconds: 420));
 

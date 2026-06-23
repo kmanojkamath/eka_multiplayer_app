@@ -126,7 +126,9 @@ class CardStorage {
 
   int lastLog = 0;
 
-  int turn = -1;
+  ValueNotifier<int> turn = ValueNotifier(-1);
+
+  late final AnimationController timer;
 
   int winner = -1;
 

@@ -2,8 +2,6 @@ part of '../player_game_play.dart';
 
 extension GameStart on PlayerGamePlay {
   Future<Move> gameStart() async {
-    _turn = _localPlayerNumber(startingPlayer);
-
     final log = await _waitForNextLog() as GameStartLog;
 
     List<List<int>> P = List.generate(_playerCount, (i) => []);
@@ -33,8 +31,8 @@ extension GameStart on PlayerGamePlay {
 
     debugPrint(_localPlayerNumber(startingPlayer).toString());
 
-    return _localPlayerNumber(startingPlayer) == 0
-        ? Move.playerTurn
-        : Move.processLog;
+    _turn = _localPlayerNumber(startingPlayer);
+
+    return _turn;
   }
 }

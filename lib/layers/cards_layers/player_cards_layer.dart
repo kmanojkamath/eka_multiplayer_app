@@ -1,3 +1,4 @@
+import 'package:eka_multiplayer_app/widgets/timer.dart';
 import 'package:flutter/material.dart';
 
 import '../../game/models/card_storage.dart';
@@ -20,15 +21,37 @@ class _PlayerCardsLayerState extends State<PlayerCardsLayer> {
       builder: (context, constraints) {
         return Stack(
           children: [
-            ...List.generate(108, (i) {
-              return AnimatedCard(
-                widget.cardStorage.card[i],
-                widget.cardStorage,
-                cardScale: 0.75,
-                cardWidthScale: 0,
-                cardPosition: Positions(widget.cardStorage, MediaQuery.sizeOf(context)).drawPosition,
-              );
-            }),
+            Stack(
+              children: List.generate(108, (i) {
+                return AnimatedCard(
+                  widget.cardStorage.card[i],
+                  widget.cardStorage,
+                  cardScale: 0.75,
+                  cardWidthScale: 0,
+                  cardPosition: Positions(
+                    widget.cardStorage,
+                    MediaQuery.sizeOf(context),
+                  ).drawPosition,
+                );
+              }),
+            ),
+            Positioned(
+              right: 18,
+              bottom: 18,
+              child: ListenableBuilder(
+                listenable: Listenable.merge([
+                  widget.cardStorage.timer,
+                  widget.cardStorage.turn,
+                ]),
+                builder: (_, _) {
+                  if (widget.cardStorage.turn.value == 0) {
+                    return Timer(progress: widget.cardStorage.timer.value);
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
+              ),
+            ),
           ],
         );
       },

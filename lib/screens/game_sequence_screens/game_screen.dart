@@ -36,7 +36,8 @@ class GameScreen extends StatefulWidget {
   State<GameScreen> createState() => _GameScreenState();
 }
 
-class _GameScreenState extends State<GameScreen> {
+class _GameScreenState extends State<GameScreen>
+    with SingleTickerProviderStateMixin {
   late CardStorage cardStorage;
   late CardAnimations cardAnimations;
   late HostGamePlay hostGamePlay;
@@ -91,8 +92,16 @@ class _GameScreenState extends State<GameScreen> {
   @override
   void initState() {
     super.initState();
+    AnimationController timer = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 18),
+    );
+
     cardStorage = CardStorage(widget.playerCount);
+
+    cardStorage.timer = timer;
     cardStorage.playerNames = widget.players;
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       cardAnimations = CardAnimations(
         Positions(cardStorage, MediaQuery.sizeOf(context)),
@@ -139,6 +148,8 @@ class _GameScreenState extends State<GameScreen> {
                 playerCount: widget.playerCount,
                 currentPlayer: widget.playerNumber,
                 names: widget.players,
+                turn: cardStorage.turn,
+                timer: cardStorage.timer,
               );
             }),
             DrawCardLayer(cardStorage),

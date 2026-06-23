@@ -1,5 +1,5 @@
-import 'package:eka_multiplayer_app/widgets/name_plate/name_plate.dart';
 import 'package:eka_multiplayer_app/helpers/ui_player_number.dart';
+import 'package:eka_multiplayer_app/widgets/name_plate/timed_name_plate.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/card/animated-cards/animated_player_card.dart';
@@ -13,6 +13,8 @@ class PlayerNCardsLayer extends StatefulWidget {
   final int playerNumber;
   final int currentPlayer;
   final List<String> names;
+  final AnimationController timer;
+  final ValueNotifier<int> turn;
   const PlayerNCardsLayer(
     this.cardStorage, {
     super.key,
@@ -20,6 +22,8 @@ class PlayerNCardsLayer extends StatefulWidget {
     required this.playerNumber,
     required this.currentPlayer,
     required this.names,
+    required this.timer,
+    required this.turn
   });
   @override
   State<PlayerNCardsLayer> createState() => _PlayerNCardsLayerState();
@@ -47,9 +51,12 @@ class _PlayerNCardsLayerState extends State<PlayerNCardsLayer> {
             Positioned(
               top: positions.screenSize.height * top[uiPN],
               left: positions.screenSize.width * left[uiPN],
-              child: NamePlate(
-                positions,
-                widget.names[localPlayerNumber(widget.playerNumber)],
+              child: TimedNamePlate(
+                positions: positions,
+                playerName: widget.names[localPlayerNumber(widget.playerNumber)],
+                timer: widget.timer,
+                turn: widget.turn,
+                playerNumber: widget.playerNumber,
               ),
             ),
             Stack(

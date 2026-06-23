@@ -2,8 +2,6 @@ part of '../host_game_play.dart';
 
 extension GameStart on HostGamePlay {
   Future<Move> gameStart() async {
-    _turn = startingPlayer;
-
     List<List<int>> P = List.filled(_playerCount, []);
 
     for (int i = 0; i < _playerCount; i++) {
@@ -34,6 +32,8 @@ extension GameStart on HostGamePlay {
 
     await _cardAnimations.putTopCard();
 
-    return startingPlayer == 0 ? Move.playerTurn : Move.processLog;
+     _turn = startingPlayer;
+
+    return _turn;
   }
 }

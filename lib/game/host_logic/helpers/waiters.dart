@@ -53,6 +53,8 @@ extension Waiters on HostGamePlay {
 
     _cardStorage.lastLog++;
 
+    _cardStorage.timer.stop();
+
     return snap.toGameLog();
   }
 }

@@ -9,27 +9,23 @@ class NamePlate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: positions.screenSize.width * 0.26,
-      height: positions.screenSize.height * 0.10,
-      child: Card(
-        color: Colors.black,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        child: SizedBox(
-          width: positions.screenSize.width * 0.25,
-          height: positions.screenSize.height * 0.09,
-          child: Card(
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Center(
-              child: Text(
-                playerName,
-                style: TextStyle(
-                  fontSize: positions.screenSize.width * 0.022,
-                  fontWeight: FontWeight.bold,
-                ),
+    return Card(
+      color: Colors.black,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      child: SizedBox(
+        width: positions.screenSize.width * 0.25,
+        height: positions.screenSize.height * 0.09,
+        child: Card(
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Center(
+            child: Text(
+              playerName,
+              style: TextStyle(
+                fontSize: positions.screenSize.width * 0.022,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),

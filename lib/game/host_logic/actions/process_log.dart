@@ -2,6 +2,8 @@ part of '../host_game_play.dart';
 
 extension ProcessLog on HostGamePlay {
   Future<Move> processLog() async {
+    _cardStorage.timer.forward(from: 0);
+
     final log = await _waitForNextLog();
 
     switch (log) {
@@ -9,9 +11,10 @@ extension ProcessLog on HostGamePlay {
         nextPlayer: final nextPlayer,
         isReverse: final isReverse,
       ):
+        _cardStorage.timer.stop();
         _turn = nextPlayer;
         if (isReverse) _reverse();
-        return nextPlayer == 0 ? Move.playerTurn : Move.processLog;
+        return _turn;
 
       case PlayerDrawLog(
         playerNumber: final playerNumber,
@@ -23,7 +26,8 @@ extension ProcessLog on HostGamePlay {
           _playerNPile(playerNumber).add(drawCards[i]);
           await _cardAnimations.playerNDrawCard(drawCards[i], playerNumber);
         }
-        return _turn == 0 ? Move.playerTurn : Move.processLog;
+        _cardStorage.timer.forward(from: 0);
+        return _turn;
 
       case PlayerPlayLog(
         playerNumber: final playerNumber,
@@ -34,7 +38,8 @@ extension ProcessLog on HostGamePlay {
         if (color != null) _changeColor(color);
         _playerNPile(playerNumber).remove(putCard);
         await _cardAnimations.playerNPlayCard(playerNumber);
-        return _turn == 0 ? Move.playerTurn : Move.processLog;
+        _cardStorage.timer.forward(from: 0);
+        return _turn;
 
       case GameWinLog(playerNumber: int playerNumber):
         _cardStorage.winner = playerNumber;
