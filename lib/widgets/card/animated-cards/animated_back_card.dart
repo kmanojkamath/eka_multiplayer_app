@@ -6,10 +6,13 @@ import '../card-ui/back_card_widget.dart';
 import '../../../game/models/card_storage.dart';
 
 class BackCardController {
+  final int cardNumber;
   Future<void> Function(double, Duration, Curve)? changeScale;
   Future<void> Function(Offset, Duration, Curve)? changePosition;
   Future<void> Function(double, Duration, Curve)? changeAngle;
   Future<void> Function(double, Duration, Curve)? changeWidthScale;
+
+  BackCardController(this.cardNumber);
 }
 
 class AnimatedBackCard extends StatefulWidget {
@@ -176,6 +179,7 @@ class _AnimatedBackCardState extends State<AnimatedBackCard>
 
       child: GestureDetector(
         onTap: () async {
+          debugPrint(widget._backCardController.cardNumber.toString());
           if (widget.cardStorage.canDraw) {
             widget.cardStorage.canDraw = false;
             await Future.delayed(Duration(milliseconds: 76));

@@ -7,14 +7,14 @@ extension GameStart on PlayerGamePlay {
     List<List<int>> P = List.generate(_playerCount, (i) => []);
 
     for (int i = 0; i < _playerCount; i++) {
-      P[i] = log.playerHands[_localPlayerNumber(i)];
+      P[i] = log.playerHands[i];
       _deckPile.removeWhere((element) => P[i].contains(element));
     }
 
     for (int j = 0; j < 7; j++) {
       for (int i = 0; i < _playerCount; i++) {
         int t = (i + _localPlayerNumber(startingPlayer)) % _playerCount;
-        int ci = P[t][j];
+        int ci = P[_cloudPlayerNumber(t)][j];
         _playerNPile(t).add(ci);
         if (t != 0) {
           await cardAnimations.playerNDrawCard(ci, t);

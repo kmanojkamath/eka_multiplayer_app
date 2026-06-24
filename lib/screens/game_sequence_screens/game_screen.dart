@@ -117,7 +117,10 @@ class _GameScreenState extends State<GameScreen>
         );
 
         await hostGamePlay.gameStart();
-        await processHostMove(Move.values[widget.startingPlayer], hostGamePlay);
+        await processHostMove(
+          widget.startingPlayer == 0 ? Move.playerTurn : Move.processLog,
+          hostGamePlay,
+        );
       } else {
         PlayerGamePlay playerNGamePlay = PlayerGamePlay(
           widget.playerNumber,

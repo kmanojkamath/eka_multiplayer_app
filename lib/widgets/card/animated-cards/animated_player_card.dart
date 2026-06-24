@@ -163,7 +163,10 @@ class _AnimatedPlayerCardState extends State<AnimatedPlayerCard>
         );
       },
 
-      child: BackCardWidget(),
+      child: GestureDetector(
+        onTap: () => debugPrint(widget._backCardController.cardNumber.toString()),
+        child: BackCardWidget(),
+      ),
     );
   }
 }

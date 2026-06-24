@@ -81,16 +81,7 @@ class Positions {
   }
 
   double playerNCardScale(int playerNumber) {
-    final piles = [
-      cardStorage.player1Pile,
-      cardStorage.player2Pile,
-      cardStorage.player3Pile,
-      cardStorage.player4Pile,
-      cardStorage.player5Pile,
-    ];
-
-    final n = piles[playerNumber].length;
-
+    final n = cardStorage.playerNPile(playerNumber).length;
     return 0.625 - n / 96;
   }
 

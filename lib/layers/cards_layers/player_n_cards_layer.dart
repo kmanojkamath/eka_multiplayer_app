@@ -31,7 +31,7 @@ class PlayerNCardsLayer extends StatefulWidget {
 
 class _PlayerNCardsLayerState extends State<PlayerNCardsLayer> {
   int localPlayerNumber(int playerNumber) {
-    return (widget.playerCount + playerNumber - widget.currentPlayer) %
+    return (widget.playerCount + playerNumber + widget.currentPlayer) %
         widget.playerCount;
   }
 

@@ -77,7 +77,7 @@ class _GradientTimerPainter extends CustomPainter {
 
     canvas.drawArc(
       rect,
-      0, // start from top
+      0,
       2 * pi * progress,
       false,
       progressPaint,

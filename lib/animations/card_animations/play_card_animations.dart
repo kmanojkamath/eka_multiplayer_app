@@ -33,7 +33,7 @@ extension PlayCardAnimations on CardAnimations {
 
     await Future.wait(
       cardAnimator.movePlayerCard(
-        positions.cardStorage.playerNCard(playerNumber)[n],
+        positions.cardStorage.playerNCard(playerNumber).elementAt(n),
         scale: positions.drawScale,
         widthScale: 0,
         angle: 0,
@@ -43,10 +43,7 @@ extension PlayCardAnimations on CardAnimations {
 
     await Future.wait(
       cardAnimator.moveTopCard(
-        position: positions.playerNCardPosition(
-          positions.cardStorage.player2Pile.length,
-          playerNumber,
-        ),
+        position: positions.playerNCardPosition(n-1, playerNumber),
       ),
     );
 
@@ -61,7 +58,7 @@ extension PlayCardAnimations on CardAnimations {
     );
 
     await positions.cardStorage
-        .playerNCard(playerNumber)[n]
+        .playerNCard(playerNumber).elementAt(n)
         .changePosition!
         .call(
           positions.drawPosition,

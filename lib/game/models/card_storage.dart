@@ -64,28 +64,28 @@ class CardStorage {
 
   set topCard(int ci) => discardPile.add(ci);
 
-  BackCardController backOfDrawingCard = BackCardController();
+  BackCardController backOfDrawingCard = BackCardController(0);
 
-  BackCardController stationary = BackCardController();
+  BackCardController stationary = BackCardController(-1);
 
   List<BackCardController> player1Card = List.generate(27, (i) {
-    return BackCardController();
+    return BackCardController(100+i);
   });
 
   List<BackCardController> player2Card = List.generate(27, (i) {
-    return BackCardController();
+    return BackCardController(200+i);
   });
 
   List<BackCardController> player3Card = List.generate(27, (i) {
-    return BackCardController();
+    return BackCardController(300+i);
   });
 
   List<BackCardController> player4Card = List.generate(27, (i) {
-    return BackCardController();
+    return BackCardController(400+i);
   });
 
   List<BackCardController> player5Card = List.generate(27, (i) {
-    return BackCardController();
+    return BackCardController(500+i);
   });
 
   List<BackCardController> playerNCard(int playerNumber) {
