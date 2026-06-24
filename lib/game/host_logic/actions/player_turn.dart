@@ -38,6 +38,10 @@ extension PlayerTurn on HostGamePlay {
 
     _playerNPile(0).remove(_selectedCard);
 
+    _cardStorage.changeDisplayedTopCard();
+
+    await _cardAnimations.unshowPlayableCards(didPlay: true);
+
     late PlayerPlayLog log;
 
     if (_topCard.isWild) {
@@ -65,16 +69,12 @@ extension PlayerTurn on HostGamePlay {
 
     await _sendLog(log);
 
-    _cardStorage.changeDisplayedTopCard();
-
     if (_playerNPile(0).isEmpty) {
       final log = GameWinLog(_nextLog, playerNumber: 0);
       await _sendLog(log);
       _cardStorage.winner = 0;
       return Move.gameWin;
     }
-
-    await _cardAnimations.unshowPlayableCards();
 
     _playerNPile(0).remove(_selectedCard);
     _topCard = _selectedCard;
