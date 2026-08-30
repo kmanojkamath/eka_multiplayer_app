@@ -25,7 +25,7 @@ extension ProcessLog on PlayerGamePlay {
           _deckPile.remove(drawCards[i]);
           _playerNPile(_localPlayerNumber(playerNumber)).add(drawCards[i]);
 
-          await cardAnimations.playerNDrawCard(
+          await _cardAnimations.playerNDrawCard(
             drawCards[i],
             _localPlayerNumber(playerNumber),
           );
@@ -42,7 +42,7 @@ extension ProcessLog on PlayerGamePlay {
         playerNumber = _localPlayerNumber(playerNumber);
         _topCard = putCard;
         _playerNPile(playerNumber).remove(putCard);
-        await cardAnimations.playerNPlayCard(playerNumber);
+        await _cardAnimations.playerNPlayCard(playerNumber);
         _cardStorage.timer.forward(from: 0);
         return _turn;
 

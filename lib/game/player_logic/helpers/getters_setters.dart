@@ -1,7 +1,7 @@
 part of '../player_game_play.dart';
 
 extension GettersSetters on PlayerGamePlay {
-  CardStorage get _cardStorage => cardAnimations.positions.cardStorage;
+  CardStorage get _cardStorage => _cardAnimations.positions.cardStorage;
 
   int get _playerCount => _cardStorage.playerCount;
 
@@ -15,7 +15,7 @@ extension GettersSetters on PlayerGamePlay {
     _cardStorage.topCard = ci;
   }
 
-  CollectionReference get _logsRef => roomRef.collection('logs');
+  CollectionReference get _logsRef => _roomRef.collection('logs');
   int get _nextLog => _cardStorage.lastLog + 1;
 
   int get _selectedCard => _cardStorage.selectedCard.value;

@@ -13,13 +13,13 @@ extension GameStart on PlayerGamePlay {
 
     for (int j = 0; j < 7; j++) {
       for (int i = 0; i < _playerCount; i++) {
-        int t = (i + _localPlayerNumber(startingPlayer)) % _playerCount;
+        int t = (i + _localPlayerNumber(_startingPlayer)) % _playerCount;
         int ci = P[_cloudPlayerNumber(t)][j];
         _playerNPile(t).add(ci);
         if (t != 0) {
-          await cardAnimations.playerNDrawCard(ci, t);
+          await _cardAnimations.playerNDrawCard(ci, t);
         } else {
-          await cardAnimations.playerDrawCard(ci);
+          await _cardAnimations.playerDrawCard(ci);
         }
       }
     }
@@ -27,11 +27,11 @@ extension GameStart on PlayerGamePlay {
     _topCard = log.topCard;
     _deckPile.remove(_topCard.ci);
 
-    await cardAnimations.putTopCard();
+    await _cardAnimations.putTopCard();
 
-    debugPrint(_localPlayerNumber(startingPlayer).toString());
+    debugPrint(_localPlayerNumber(_startingPlayer).toString());
 
-    _turn = _localPlayerNumber(startingPlayer);
+    _turn = _localPlayerNumber(_startingPlayer);
 
     return _turn;
   }

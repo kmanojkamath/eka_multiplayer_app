@@ -29,6 +29,8 @@ extension PlayCardAnimations on CardAnimations {
   }
 
   Future<void> playerNPlayCard(int playerNumber) async {
+    if (playerNumber == 0) return playerPlayCard();
+
     int n = positions.cardStorage.playerNPile(playerNumber).length;
 
     await Future.wait(
@@ -43,7 +45,7 @@ extension PlayCardAnimations on CardAnimations {
 
     await Future.wait(
       cardAnimator.moveTopCard(
-        position: positions.playerNCardPosition(n-1, playerNumber),
+        position: positions.playerNCardPosition(n - 1, playerNumber),
       ),
     );
 
@@ -58,7 +60,8 @@ extension PlayCardAnimations on CardAnimations {
     );
 
     await positions.cardStorage
-        .playerNCard(playerNumber).elementAt(n)
+        .playerNCard(playerNumber)
+        .elementAt(n)
         .changePosition!
         .call(
           positions.drawPosition,

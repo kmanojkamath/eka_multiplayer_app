@@ -28,11 +28,9 @@ extension Waiters on PlayerGamePlay {
       while (_cardStorage.canDraw) {
         await waitUntilFalseOrTimeout();
         if (!_cardStorage.canDraw) break;
-        await cardAnimations.drawIndicator();
+        await _cardAnimations.drawIndicator();
       }
     }
-    if (_playablePlayerCards.isEmpty) _cardStorage.canDraw = true;
-
     final completer = Completer<int>();
 
     late VoidCallback listener;

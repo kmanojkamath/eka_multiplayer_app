@@ -15,12 +15,12 @@ extension PlayerTurn on PlayerGamePlay {
 
     _playerNPile(0).add(ci);
 
-    await cardAnimations.playerDrawCard(ci);
+    await _cardAnimations.playerDrawCard(ci);
 
     if (_isPlayable(ci)) {
       return Move.playerTurn;
     } else {
-      await cardAnimations.unshowPlayableCards(didPlay: false);
+      await _cardAnimations.unshowPlayableCards(didPlay: false);
       return _changeTurn(_movingForward ? 1 : _playerCount - 1);
     }
   }
@@ -28,7 +28,7 @@ extension PlayerTurn on PlayerGamePlay {
   Future<Move> playerTurn() async {
     _cardStorage.timer.forward(from: 0);
 
-    await cardAnimations.showPlayableCards();
+    await _cardAnimations.showPlayableCards();
 
     await _waitForPlayer();
 
@@ -36,7 +36,7 @@ extension PlayerTurn on PlayerGamePlay {
 
     if (_selectedCard < 0) return _drawForPlayer();
 
-    await cardAnimations.playerPlayCard();
+    await _cardAnimations.playerPlayCard();
 
     _topCard = _selectedCard;
 
@@ -44,7 +44,7 @@ extension PlayerTurn on PlayerGamePlay {
 
     _cardStorage.changeDisplayedTopCard();
 
-    await cardAnimations.unshowPlayableCards(didPlay: true);
+    await _cardAnimations.unshowPlayableCards(didPlay: true);
 
     late PlayerPlayLog log;
 
@@ -100,9 +100,9 @@ extension PlayerTurn on PlayerGamePlay {
       _sendLog(log);
 
       _playerNPile(prey).add(ci1);
-      await cardAnimations.playerNDrawCard(ci1, prey);
+      await _cardAnimations.playerNDrawCard(ci1, prey);
       _playerNPile(prey).add(ci2);
-      await cardAnimations.playerNDrawCard(ci2, prey);
+      await _cardAnimations.playerNDrawCard(ci2, prey);
 
       if (_movingForward) {
         return _changeTurn(2 % _playerCount);
@@ -138,7 +138,7 @@ extension PlayerTurn on PlayerGamePlay {
 
       for (int i = 0; i < 4; i++) {
         _playerNPile(prey).add(cis[i]);
-        await cardAnimations.playerNDrawCard(cis[i], prey);
+        await _cardAnimations.playerNDrawCard(cis[i], prey);
       }
 
       return _changeTurn(_movingForward ? 2 % _playerCount : _playerCount - 2);

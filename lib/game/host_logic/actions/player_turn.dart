@@ -92,7 +92,7 @@ extension PlayerTurn on HostGamePlay {
         drawCards: [ci1, ci2],
       );
 
-      _sendLog(log);
+      await _sendLog(log);
 
       _playerNPile(prey).add(ci1);
       await _cardAnimations.playerNDrawCard(ci1, prey);

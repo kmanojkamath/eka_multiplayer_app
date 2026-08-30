@@ -23,15 +23,15 @@ part 'actions/player_turn.dart';
 part 'actions/process_log.dart';
 
 class PlayerGamePlay {
-  final CardAnimations cardAnimations;
-  final DocumentReference roomRef;
+  final CardAnimations _cardAnimations;
+  final DocumentReference _roomRef;
   final int currentPlayer;
-  final int startingPlayer;
+  final int _startingPlayer;
 
   const PlayerGamePlay(
     this.currentPlayer, {
-    required this.cardAnimations,
-    required this.roomRef,
-    required this.startingPlayer,
+    required this._cardAnimations,
+    required this._roomRef,
+    required this._startingPlayer,
   });
 }
