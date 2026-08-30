@@ -44,4 +44,16 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Android local config and signing secrets
+android/local.properties
+android/key.properties
+*.jks
+*.keystore
+*.p12
+*.pem
+*.p8
+
+# Flutter version manager
+.fvm/
+
 **/firebase_options.dart
